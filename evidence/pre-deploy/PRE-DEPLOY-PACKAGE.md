@@ -11,6 +11,7 @@ Checkpoint candidate for independent `PRE_DEPLOY` review. No Studio write or dep
 - Dependency: `py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng`
 - GenLayerJS: `2.0.0-rc.1`
 - Target: `studio-dev`, chain `61997`, `https://studio-dev.genlayer.com/api`
+- Read-only Studio readiness: `studio-tool-readiness.json`; official CLI `0.40.0-rc.3`, GenLayerJS `2.0.0-rc.1`, linter `0.11.1rc2`, actor `actor19` at `0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`, actual balance `110000000000000000000` wei, zero writes submitted.
 
 ## Checks
 
