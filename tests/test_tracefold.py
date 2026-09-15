@@ -714,6 +714,31 @@ def test_22_model_cannot_strengthen_unrelated_raw_evidence(direct_vm, direct_dep
     assert json.loads(contract.get_counts())["cluster_count"] == 0
 
 
+def test_22a_one_advisory_with_multiple_packages_keeps_explicit_alias(direct_vm, direct_deploy):
+    contract = deploy_contract(direct_deploy)
+    advisory = json.loads(SAMPLE_GHSA_BODY)
+    advisory["vulnerabilities"] = [
+        {"package": {"ecosystem": "Maven", "name": name}, "vulnerable_version_range": "< 3.2.0"}
+        for name in (
+            "org.apache.logging.log4j:log4j-core",
+            "com.guicedee.services:log4j-core",
+            "org.ops4j.pax.logging:pax-logging-log4j2",
+            "org.xbib.elasticsearch:log4j",
+            "uk.co.nichesolutions.logging.log4j:log4j-core",
+        )
+    ]
+    mock_sources(direct_vm, ghsa=json.dumps(advisory))
+    mock_llm_same(direct_vm)
+    with direct_vm.prank(ALICE):
+        pid = contract.propose_alias_set("multi-package-alias", CVE_ID, GHSA_ID)
+        assert contract.assess_proposal(pid) == "SAME_VULNERABILITY"
+    proposal = json.loads(contract.get_proposal(pid))
+    assert proposal["status"] == "MERGED"
+    assert proposal["latest_assessment"]["package_relation"] == "UNKNOWN"
+    assert proposal["latest_assessment"]["cross_reference_band"] == "EXPLICIT_ALIAS"
+    assert json.loads(contract.get_counts())["cluster_count"] == 1
+
+
 def test_23_consumption_history_is_bounded_and_authoritative(direct_vm, direct_deploy):
     contract = deploy_contract(direct_deploy)
     mock_sources(direct_vm)

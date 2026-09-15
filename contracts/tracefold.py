@@ -624,24 +624,32 @@ class Tracefold(gl.contract.Contract):
 
             # Check package coordinates
             package_coordinates = set()
+            ghsa_coordinates = set()
+            osv_coordinates = set()
             if "GHSA" in normalized_projections:
                 for p in normalized_projections["GHSA"].get("packages", []):
                     ecosystem = str(p.get("ecosystem", "")).strip().lower()
                     name = str(p.get("name", "")).strip().lower()
                     if ecosystem and name:
-                        package_coordinates.add((ecosystem, name))
+                        coordinate = (ecosystem, name)
+                        ghsa_coordinates.add(coordinate)
+                        package_coordinates.add(coordinate)
             if "OSV" in normalized_projections:
                 for p in normalized_projections["OSV"].get("affected", []):
                     ecosystem = str(p.get("ecosystem", "")).strip().lower()
                     name = str(p.get("name", "")).strip().lower()
                     if ecosystem and name:
-                        package_coordinates.add((ecosystem, name))
+                        coordinate = (ecosystem, name)
+                        osv_coordinates.add(coordinate)
+                        package_coordinates.add(coordinate)
 
             package_relation = "UNKNOWN"
-            if len(package_coordinates) == 1:
+            if ghsa_coordinates and osv_coordinates and ghsa_coordinates.isdisjoint(osv_coordinates) and cross_ref_band == "NONE":
+                package_relation = "UNRELATED"
+            elif len(package_coordinates) == 1:
                 package_relation = "EXACT_MATCH"
             elif len(package_coordinates) > 1:
-                package_relation = "UNRELATED"
+                package_relation = "OVERLAPPING" if ghsa_coordinates & osv_coordinates else "UNKNOWN"
 
             # Determine whether sufficient official records succeeded
             min_required_records = 2 if len(canonical_ids_list) >= 2 else 1
