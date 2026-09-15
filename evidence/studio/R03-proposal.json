@@ -1,0 +1,41 @@
+{
+  "caseId": "R03",
+  "result": "PASS",
+  "contractAddress": "0x5E2899A296378a42d2F5542507cac3094bD8b84E",
+  "sourceSha256": "C0ECFC464BC9DBAAAFC8A371B8B7E9218FE4696339F6F7754B6FBCA886542CF0",
+  "operationId": "tf2-r03-propose-log4j-fix",
+  "method": "propose_alias_set",
+  "arguments": [
+    "tf2-log4j-fix",
+    "CVE-2021-45046",
+    "GHSA-7rjr-3q55-vv33"
+  ],
+  "feeValueWei": "613850400010352",
+  "transactionHash": "0x713e35d7d9ba9ec5d925313899db1b6b60cb9a59786fceb8cc60292017be6857",
+  "receipt": {
+    "status": "FINALIZED",
+    "semanticExecution": "FINISHED_WITH_RETURN",
+    "consensus": "MAJORITY_AGREE",
+    "sender": "0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5",
+    "feeRefundWei": "535214900009529",
+    "feeSpentWei": "78635500000823"
+  },
+  "authoritativeReadback": {
+    "counts": {
+      "proposal_count": 2,
+      "cluster_count": 1,
+      "consumption_count": 0
+    },
+    "proposal": {
+      "proposal_id": 2,
+      "status": "PROPOSED",
+      "canonical_ids": [
+        "CVE-2021-45046",
+        "GHSA-7RJR-3Q55-VV33"
+      ],
+      "client_nonce": "tf2-log4j-fix"
+    },
+    "getProposalByNonce": 2
+  },
+  "attempts": 1
+}

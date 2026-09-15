@@ -1,0 +1,42 @@
+{
+  "caseId": "R01",
+  "result": "PASS",
+  "purpose": "Proposal creation, exact IDs and nonce binding",
+  "contractAddress": "0x5E2899A296378a42d2F5542507cac3094bD8b84E",
+  "sourceSha256": "C0ECFC464BC9DBAAAFC8A371B8B7E9218FE4696339F6F7754B6FBCA886542CF0",
+  "operationId": "tf2-r01-propose-log4shell",
+  "method": "propose_alias_set",
+  "arguments": [
+    "tf2-log4shell",
+    "CVE-2021-44228",
+    "GHSA-jfh8-c2jp-5v3q"
+  ],
+  "feeValueWei": "613844400010352",
+  "transactionHash": "0x8deddbfac3548c87803e8e07c40606afe3f9305bdc5de9fd6a90b6e8ff165dc9",
+  "receipt": {
+    "status": "FINALIZED",
+    "semanticExecution": "FINISHED_WITH_RETURN",
+    "consensus": "MAJORITY_AGREE",
+    "sender": "0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5"
+  },
+  "authoritativeReadback": {
+    "counts": {
+      "proposal_count": 1,
+      "cluster_count": 0,
+      "consumption_count": 0
+    },
+    "proposal": {
+      "proposal_id": 1,
+      "status": "PROPOSED",
+      "canonical_ids": [
+        "CVE-2021-44228",
+        "GHSA-JFH8-C2JP-5V3Q"
+      ],
+      "client_nonce": "tf2-log4shell",
+      "attempts": 0,
+      "objection_count": 0
+    },
+    "getProposalByNonce": 1
+  },
+  "attempts": 1
+}

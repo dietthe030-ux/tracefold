@@ -1,0 +1,40 @@
+{
+  "caseId": "R08",
+  "result": "PASS",
+  "operationId": "tf2-r08-assess-objection",
+  "transactionHash": "0x5b56180e9ebd4bb14988a24ddf9794e73e41a26b703b156c45fd54750a8c7845",
+  "contractAddress": "0x5E2899A296378a42d2F5542507cac3094bD8b84E",
+  "method": "assess_proposal",
+  "arguments": [
+    5
+  ],
+  "feeValueWei": "627405600010352",
+  "receipt": {
+    "status": "FINALIZED",
+    "semanticExecution": "FINISHED_WITH_RETURN",
+    "consensus": "MAJORITY_AGREE"
+  },
+  "assessment": {
+    "outcome": "UNRESOLVED",
+    "objection_guard_applied": true,
+    "successful_sources": [
+      "NVD",
+      "OSV"
+    ],
+    "source_statuses": {
+      "NVD": 200,
+      "OSV": 200
+    },
+    "package_relation": "EXACT_MATCH",
+    "cross_reference_band": "EXPLICIT_ALIAS",
+    "root_cause_band": "SAME_FLAW",
+    "target_cluster_id": 2,
+    "fingerprint": "25e1581e788b1fe3cf26d7ac0b8641f2006244145db20748ec09d283637af6ca"
+  },
+  "authoritativeReadback": {
+    "proposalStatus": "UNRESOLVED",
+    "cluster_count": 2,
+    "cluster2MergeFingerprintUnchanged": "0953223e26ca1de776154ce1bc1d8da2724726f920119b8d565ff51ef3cb5f51"
+  },
+  "attempts": 1
+}

@@ -1,0 +1,25 @@
+{
+  "caseId": "R09",
+  "result": "PASS",
+  "operationId": "tf2-r09-propose-unavailable",
+  "transactionHash": "0x50b64212c78bd3945146c60bf5088677193037c2c7777b4d40dc2e93be16f685",
+  "contractAddress": "0x5E2899A296378a42d2F5542507cac3094bD8b84E",
+  "method": "propose_alias_set",
+  "arguments": [
+    "tf2-unavailable",
+    "CVE-2099-99999999"
+  ],
+  "feeValueWei": "613856400010352",
+  "receipt": {
+    "status": "FINALIZED",
+    "semanticExecution": "FINISHED_WITH_RETURN",
+    "consensus": "MAJORITY_AGREE"
+  },
+  "authoritativeReadback": {
+    "proposal_id": 6,
+    "status": "PROPOSED",
+    "proposal_count": 6,
+    "cluster_count": 2
+  },
+  "attempts": 1
+}

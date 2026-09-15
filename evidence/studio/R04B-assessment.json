@@ -1,0 +1,47 @@
+{
+  "caseId": "R04B",
+  "result": "PASS",
+  "operationId": "tf2-r04b-assess-osv-alias",
+  "transactionHash": "0xb43433cc738f86608f84f63cdbf7bfd345a8d22cece943b9ca0c136e427472b7",
+  "contractAddress": "0x5E2899A296378a42d2F5542507cac3094bD8b84E",
+  "method": "assess_proposal",
+  "arguments": [
+    3
+  ],
+  "feeValueWei": "628048800010352",
+  "receipt": {
+    "status": "FINALIZED",
+    "semanticExecution": "FINISHED_WITH_RETURN",
+    "consensus": "MAJORITY_AGREE"
+  },
+  "assessment": {
+    "outcome": "SAME_VULNERABILITY",
+    "package_relation": "EXACT_MATCH",
+    "range_relation": "IDENTICAL",
+    "cross_reference_band": "EXPLICIT_ALIAS",
+    "root_cause_band": "SAME_FLAW",
+    "successful_sources": [
+      "NVD",
+      "OSV"
+    ],
+    "source_statuses": {
+      "NVD": 200,
+      "OSV": 200
+    },
+    "source_revisions": {
+      "NVD": "fa362156c06801cf",
+      "OSV": "6904c104f052b0f1"
+    },
+    "fingerprint": "0953223e26ca1de776154ce1bc1d8da2724726f920119b8d565ff51ef3cb5f51"
+  },
+  "authoritativeReadback": {
+    "proposalStatus": "MERGED",
+    "cluster_count": 2,
+    "cluster_id": 2,
+    "aliases": [
+      "CVE-2024-26130",
+      "PYSEC-2024-225"
+    ]
+  },
+  "attempts": 1
+}
