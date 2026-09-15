@@ -1,6 +1,6 @@
 # Tracefold R13 PRE_DEPLOY package
 
-Checkpoint: `PRE_DEPLOY`. Package ID: `TRACEFOLD-R13-DOCUMENTED-CLOCK-V1`. Exact technical/evidence revision: `b807238f6b86b48242cdd306dd194daf883e04b6`. Review carrier revision is supplied by the review request and may add only this package and its manifest.
+Checkpoint: `PRE_DEPLOY`. Package ID: `TRACEFOLD-R13-DOCUMENTED-CLOCK-V2`. Exact technical/evidence revision: `a80235331be6d690f9a863eddb01696eea0659e2`. Review carrier revision is supplied by the review request and may add only this package and its manifest.
 
 R12 T01 on retired address `0xc9522C696a482CdCe5A12A684a814eeb575CbE3a` finalized and rolled back because the Studio host does not implement the SDK `GetTimestamp` call. Current official GenLayer transaction-context documentation states that `datetime.now(timezone.utc)` is wired to the deterministic transaction timestamp. R13 uses that documented clock in the shared helper and removes the test-only GetTimestamp shim. ABI, storage, constructor, trust boundary and product behavior are unchanged.
 
@@ -16,7 +16,8 @@ Hashes are SHA-256 over committed Git blob bytes at the technical revision:
 | `evidence/pre-deploy/r13-live-schema.json` | 5,605 | `29236167CC0FFCC6745FDA1A55BDF7AF23E0B79A33E2B245233CE277F5602FF2` |
 | `evidence/studio/R12-T01-gettimestamp-fail.json` | 848 | `8F720BE3A24ADAA2D3FA71729867CC2D059AEBBF1AB0BE55CF539232A55F3A4C` |
 | `docs/preflight/R13-CORRECTION-PLAN.md` | 1,259 | `258467A7E48534E89E63FC8C3B89A476024413B2777BFB47106FD75F10625046` |
-| `evidence/studio/R13-STUDIO-E2E-PLAN.md` | 4,690 | `16D7D95974A8E64DD2E1AB6BFABBFAA06BDA665EA25315D357B9C12C9F643C97` |
+| `evidence/studio/R13-STUDIO-E2E-PLAN.md` | 4,896 | `577ED07DE8680DB801495907BF760D295AD910CB28D7878D4354E67ADBF297E9` |
+| `evidence/studio/R13-datetime-now-corroboration.json` | 762 | `1FF2BDE1726631B778B658CED045800DD59296B0E092E274100D5190ED5D5AD8` |
 
 Verification: 29/29 DirectVM tests PASS; genvm-lint 0.11.1rc2 lint/validation PASS with 20 methods; live Studio schema accepts the exact source. Read-only old-contract evidence proves live `datetime.now(timezone.utc)` stored `2026-09-15T18:43:43.685100Z`, equal to receipt `2026-09-15T18:43:43.685100+00:00`. Targeted fee simulation used a stale synthetic time, so R13 uses a generic fee estimate for retry and one explicit live rollback for the cooldown negative case.
 
