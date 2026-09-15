@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "verdict": "APPROVED",
+  "checkpoint": "PRE_DEPLOY",
+  "taskId": "tracefold-2026-09-15",
+  "workflow": "Milestones",
+  "reviewerTaskId": "01a0a536-2f73-7ed1-b962-9f40520d4e77",
+  "turnId": "01a0a641-839f-7960-9a24-7fe47c48671a",
+  "packageId": "TRACEFOLD-E02-PREDEPLOY-V2",
+  "revision": "de33f75d85c87d5d76b2c19aa22ade4f00acc151",
+  "openBlockingFindings": 0,
+  "artifacts": [
+    {
+      "path": "contracts/tracefold.py",
+      "sha256": "C0ECFC464BC9DBAAAFC8A371B8B7E9218FE4696339F6F7754B6FBCA886542CF0"
+    },
+    {
+      "path": "tests/test_tracefold.py",
+      "sha256": "5472BB3FD972E4C6334A403661DB83E45482F98783A6A7336278E6BAF269EC3D"
+    },
+    {
+      "path": "docs/preflight/E02-PRE-DEPLOY-PACKAGE.md",
+      "sha256": "BF6B208F634041B036F1E5F917126F4D687BD38C0FD5A3E27B44E54571B8CCFD"
+    },
+    {
+      "path": "evidence/studio/E02-REPLACEMENT-E2E-PLAN.md",
+      "sha256": "E428D42AD28C480B26DE4FDE6327CF7ECBA2A575615E81973A6A72662E269F94"
+    },
+    {
+      "path": "docs/preflight/E02-REPLACEMENT-FEE-REQUEST.md",
+      "sha256": "458CBF3B2D220E568A75C137C14F169BFBCBF5BECBD37899CD886504B3D41FB4"
+    },
+    {
+      "path": "evidence/studio/E02-assessment-FAIL.json",
+      "sha256": "A83185EC58DFD89CDAB031823DA0186AD2452390BB9F04163DF6E68D3648A5AA"
+    },
+    {
+      "path": "evidence/studio/E02-LIVE-INVALIDATION.md",
+      "sha256": "73B0FA3084C6A2FFD30A5E7B339DD1F218653188303D10C8F5D6C7D9EEDBB64E"
+    },
+    {
+      "path": "evidence/studio/correction-contract-lint.txt",
+      "sha256": "D379390E5ABAE902199E9ECCFDF50CD97D1BAD02EED75237DBF8937843030490"
+    },
+    {
+      "path": "evidence/studio/correction-contract-tests.txt",
+      "sha256": "9EBB1C120C1694A6C104D2B622EBC0A5F142E4D62B987E0C7611B2350AA28DD1"
+    },
+    {
+      "path": "evidence/studio/correction-live-schema.json",
+      "sha256": "3B8EFAF47FDDD3A2019F03125F32053674976DF12CB96418550F75AEDB987137"
+    },
+    {
+      "path": "evidence/pre-deploy/frontend-tests.txt",
+      "sha256": "3522DA2603D4DABF203BDF66E5F029A4F44F5AF824659983AA4A4A61D00B656B"
+    },
+    {
+      "path": "evidence/pre-deploy/frontend-typecheck.txt",
+      "sha256": "5F93938D5114BD224C0BBB279854A2682357A2F9FBA62D1230F64C6D38336AFB"
+    },
+    {
+      "path": "evidence/pre-deploy/frontend-build.txt",
+      "sha256": "1CB0C5ACA9A653B71B97CFEFDDF0F62E3BD62F640E871DBDF456637C4ABB9FC5"
+    }
+  ],
+  "report": {
+    "path": "docs/preflight/E02-PRE-DEPLOY-APPROVAL-REPORT.md",
+    "sha256": "3EFD7ABC8748A4237682885598C815B3286495A3F97307037E06E779112806B4"
+  }
+}
