@@ -1,0 +1,13 @@
+{
+  "packageId": "TRACEFOLD-R12-GENVM-TIMESTAMP-V1",
+  "technicalRevision": "59e898509bc7007bf64d93963ff05ef82ccc71c8",
+  "packagePath": "docs/preflight/R12-PRE-DEPLOY-PACKAGE.md",
+  "checkpoint": "PRE_DEPLOY",
+  "sourceSha256": "E20CB3BE22885CF92BFA91376EB615B6ACEB8DF024421EB19F29108D33315D2C",
+  "sourcePath": "contracts/tracefold.py",
+  "matrixSha256": "5C303E71F7DEF5642723278E589F3690D85CC7C6A606CD6EC3D0D5372CAD60A0",
+  "hashPolicy": "SHA-256 over committed Git blob bytes; carrier revision is bound by the review request",
+  "schemaVersion": 1,
+  "matrixPath": "evidence/studio/R12-STUDIO-E2E-PLAN.md",
+  "packageGitBlobSha256": "9E7B81892BBEC69DA872AA7E253B59B5724C2604F5A369C50B997706378DE756"
+}
