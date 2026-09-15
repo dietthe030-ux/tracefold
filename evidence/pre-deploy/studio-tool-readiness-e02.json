@@ -20,7 +20,9 @@
         "trace",
         "fees",
         "readback"
-      ]
+      ],
+      "identity": "E:\\Genlayer-Tools\\studio-next-toolchain\\node_modules\\genlayer; wrapper SHA256 E3A51B5F0ADC307F2AB55A052107A2771B5B84AC7BC65E82C26E9A65F5965113; runner SHA256 B38C3CBBC97A7FD86E81A2F1A9C3ABE6F894BC0330784B056A3830D2D9C9AE57",
+      "processBacked": false
     },
     {
       "name": "GenLayer Testing Suite / genvm-lint",
@@ -29,7 +31,9 @@
       "exactVersion": "genvm-lint 0.11.1rc2 with GenVM Manager v0.6.0-rc5",
       "capabilities": [
         "integration-test"
-      ]
+      ],
+      "identity": "E:\\Genlayer-Tools\\studio-next-toolchain\\.venv; GENVM_VERSION=v0.6.0-rc5",
+      "processBacked": false
     },
     {
       "name": "GenLayerJS",
@@ -41,7 +45,9 @@
         "receipt",
         "fees",
         "readback"
-      ]
+      ],
+      "identity": "E:\\Genlayer-Tools\\studio-next-toolchain\\node_modules\\genlayer-js; toolchain lock SHA256 4EAC87B354C3BF6B1DA3CB61C0D922FF53C63689E9BB358E1519316698BF0B97",
+      "processBacked": false
     }
   ],
   "actors": [
