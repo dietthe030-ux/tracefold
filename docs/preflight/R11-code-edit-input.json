@@ -1,0 +1,24 @@
+{
+  "readAt": "2026-09-15 18:48:05 +00:00",
+  "readSet": [
+    {
+      "id": "EXPERIENCE.MANDATORY_APPLICATION",
+      "owner": "brain\\AI Project Orchestration Rules.md",
+      "sha256": "9E43C33C8150DCE8E6969D6A2BBABCB5E65124BE0FE86D9BDAA75F2503448805"
+    },
+    {
+      "id": "OPERATIONS.SMART_REPAIR",
+      "owner": "brain\\AI Project Orchestration Rules.md",
+      "sha256": "AF31391E04A7DE50C3AEC64178228529B085868E6BAB52B4D6AA1443F14E0817"
+    },
+    {
+      "id": "SPEC.TECHNICAL_ADAPTATION",
+      "owner": "brain\\AI Project Orchestration Rules.md",
+      "sha256": "EAA073E058813ABA02EB1C21CE33F9E2212A715DE845ED560F4BE038BF152AEE"
+    }
+  ],
+  "evidence": {
+    "implementation_plan": "docs/MILESTONE-IMPLEMENTATION-PLAN.md",
+    "milestone_plan_approval": "docs/preflight/milestone-plan-approval.json"
+  }
+}

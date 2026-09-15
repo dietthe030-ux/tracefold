@@ -1,6 +1,7 @@
 import datetime
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -88,6 +89,30 @@ RELATED_GHSA_BODY = json.dumps({
 
 def deploy_contract(direct_deploy, upgrader: str = UPGRADER):
     return direct_deploy(CONTRACT_PATH, upgrader)
+
+
+def test_transaction_datetime_is_authoritative(direct_vm, direct_deploy):
+    contract = deploy_contract(direct_deploy)
+    transaction_time = "2024-01-02T03:04:05Z"
+    direct_vm.warp(transaction_time)
+
+    with direct_vm.prank(ALICE):
+        proposal_id = contract.propose_alias_set("nonce-authoritative-time", CVE_ID)
+
+    proposal = json.loads(contract.get_proposal(proposal_id))
+    assert proposal["created_at"] == transaction_time
+
+
+def test_missing_transaction_datetime_fails_closed(direct_deploy):
+    contract = deploy_contract(direct_deploy)
+    instance = object.__getattribute__(contract, "_instance")
+    contract_module = sys.modules[type(instance).__module__]
+    contract_module.gl.message_raw = {}
+
+    with pytest.raises(Exception) as exc:
+        contract_module._get_current_datetime()
+
+    assert "Authoritative transaction datetime is unavailable" in str(exc.value)
 
 
 def mock_sources(direct_vm, nvd=SAMPLE_NVD_BODY, ghsa=SAMPLE_GHSA_BODY, osv=SAMPLE_OSV_BODY):
