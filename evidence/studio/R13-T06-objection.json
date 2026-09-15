@@ -1,0 +1,22 @@
+{
+  "case_id": "T06",
+  "purpose": "Record an active objection before assessment",
+  "operation_id": "tf5-t06-objection",
+  "contract": "0x8A9c3Ae6521a1d452253F640a615937c6cf9d00D",
+  "source_sha256": "85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1",
+  "actor": "actor19",
+  "sender": "0x9Ec6a971FF91c7540cCe6432E7abf7eCE005d5a5",
+  "method": "record_objection",
+  "args": [4, "DIFFERENT_ROOT_CAUSE", "Live authoritative-time objection guard"],
+  "transaction_hash": "0xbd4eda8b7effa39b2feb9c5bea254ebae6d88f8a7aedb2462a8ccab5f03cef2f",
+  "lifecycle": "FINALIZED",
+  "execution": "FINISHED_WITH_RETURN",
+  "consensus": "MAJORITY_AGREE",
+  "readback": {
+    "total": 1,
+    "reason_code": "DIFFERENT_ROOT_CAUSE",
+    "note": "Live authoritative-time objection guard",
+    "created_at": "2026-09-15T20:53:44.217451+00:00"
+  },
+  "result": "PASS"
+}

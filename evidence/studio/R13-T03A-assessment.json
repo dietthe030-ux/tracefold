@@ -1,0 +1,64 @@
+{
+  "hash": "0x39a74d7e572ce09aaf03c35ed7dc322d03a0d6c522bd4f304c9699a360283fed",
+  "status": "FINALIZED",
+  "execution": "FINISHED_WITH_RETURN",
+  "consensus": "MAJORITY_AGREE",
+  "proposal": {
+    "attempts": 1,
+    "canonical_ids": [
+      "CVE-2023-41335",
+      "PYSEC-2023-185"
+    ],
+    "client_nonce": "tf5-cluster2",
+    "cluster_id": 2,
+    "conflict_reason": "",
+    "conflicting_cluster_ids": [],
+    "created_at": "2026-09-15T20:47:49.134318+00:00",
+    "last_assessed_at": "2026-09-15T20:48:39.090362+00:00",
+    "latest_assessment": {
+      "assessed_at": "2026-09-15T20:48:39.090362+00:00",
+      "canonical_ids": [
+        "CVE-2023-41335",
+        "PYSEC-2023-185"
+      ],
+      "cluster_id": 2,
+      "cross_reference_band": "EXPLICIT_ALIAS",
+      "fingerprint": "4956f3580580b8810a049ff94d779d888c931f86ba78664a515f797a61e3a8f1",
+      "history_index": 0,
+      "outcome": "SAME_VULNERABILITY",
+      "package_relation": "EXACT_MATCH",
+      "range_relation": "IDENTICAL",
+      "reason": "CVE-2023-41335 and PYSEC-2023-185 share identical descriptions, explicit alias links in OSV, and exact package match for matrix-synapse with overlapping version ranges.",
+      "root_cause_band": "SAME_FLAW",
+      "source_revisions": {
+        "NVD": "402e5a522c16c788",
+        "OSV": "799f972885f9b881"
+      },
+      "source_statuses": {
+        "NVD": 200,
+        "OSV": 200
+      },
+      "successful_sources": [
+        "NVD",
+        "OSV"
+      ],
+      "target_cluster_id": 0
+    },
+    "objection_count": 0,
+    "proposal_id": 2,
+    "proposer": "0x9Ec6a971FF91c7540cCe6432E7abf7eCE005d5a5",
+    "status": "MERGED"
+  },
+  "cluster": {
+    "aliases": [
+      "CVE-2023-41335",
+      "PYSEC-2023-185"
+    ],
+    "canonical_display_id": "CVE-2023-41335",
+    "cluster_id": 2,
+    "created_at": "2026-09-15T20:48:39.090362+00:00",
+    "created_proposal_id": 2,
+    "merge_fingerprint": "4956f3580580b8810a049ff94d779d888c931f86ba78664a515f797a61e3a8f1",
+    "updated_at": "2026-09-15T20:48:39.090362+00:00"
+  }
+}

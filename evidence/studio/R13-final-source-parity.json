@@ -1,0 +1,11 @@
+{
+  "rpcMethod": "gen_getContractCode",
+  "contract": "0x8A9c3Ae6521a1d452253F640a615937c6cf9d00D",
+  "localPath": "contracts/tracefold.py",
+  "onchainBytes": 50472,
+  "localBytes": 50472,
+  "onchainSha256": "85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1",
+  "localSha256": "85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1",
+  "exactBytesEqual": true,
+  "verifiedAt": "2026-09-15T21:13:00Z"
+}

@@ -1,0 +1,65 @@
+{
+  "hash": "0xa52524e9fffb80418d4da41042a38710b6bdc03723bc20538ffb78f426163d3b",
+  "status": "FINALIZED",
+  "execution": "FINISHED_WITH_RETURN",
+  "consensus": "MAJORITY_AGREE",
+  "created_at": "2026-09-15T20:46:41.111309+00:00",
+  "proposal": {
+    "attempts": 1,
+    "canonical_ids": [
+      "CVE-2024-26130",
+      "PYSEC-2024-225"
+    ],
+    "client_nonce": "tf5-alias",
+    "cluster_id": 1,
+    "conflict_reason": "",
+    "conflicting_cluster_ids": [],
+    "created_at": "2026-09-15T20:45:49.111816+00:00",
+    "last_assessed_at": "2026-09-15T20:46:41.111309+00:00",
+    "latest_assessment": {
+      "assessed_at": "2026-09-15T20:46:41.111309+00:00",
+      "canonical_ids": [
+        "CVE-2024-26130",
+        "PYSEC-2024-225"
+      ],
+      "cluster_id": 1,
+      "cross_reference_band": "EXPLICIT_ALIAS",
+      "fingerprint": "0953223e26ca1de776154ce1bc1d8da2724726f920119b8d565ff51ef3cb5f51",
+      "history_index": 0,
+      "outcome": "SAME_VULNERABILITY",
+      "package_relation": "EXACT_MATCH",
+      "range_relation": "IDENTICAL",
+      "reason": "OSV/PYSEC-2024-225 explicitly aliases CVE-2024-26130. Both records describe the same cryptography pkcs12.serialize_key_and_certificates issue, affecting cryptography 38.0.0 before 42.0.4, with matching fix commit 97d231672763cdb5959a3b191e692a362f1b9e55.",
+      "root_cause_band": "SAME_FLAW",
+      "source_revisions": {
+        "NVD": "fa362156c06801cf",
+        "OSV": "6904c104f052b0f1"
+      },
+      "source_statuses": {
+        "NVD": 200,
+        "OSV": 200
+      },
+      "successful_sources": [
+        "NVD",
+        "OSV"
+      ],
+      "target_cluster_id": 0
+    },
+    "objection_count": 0,
+    "proposal_id": 1,
+    "proposer": "0x9Ec6a971FF91c7540cCe6432E7abf7eCE005d5a5",
+    "status": "MERGED"
+  },
+  "cluster": {
+    "aliases": [
+      "CVE-2024-26130",
+      "PYSEC-2024-225"
+    ],
+    "canonical_display_id": "CVE-2024-26130",
+    "cluster_id": 1,
+    "created_at": "2026-09-15T20:46:41.111309+00:00",
+    "created_proposal_id": 1,
+    "merge_fingerprint": "0953223e26ca1de776154ce1bc1d8da2724726f920119b8d565ff51ef3cb5f51",
+    "updated_at": "2026-09-15T20:46:41.111309+00:00"
+  }
+}

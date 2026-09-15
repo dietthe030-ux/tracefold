@@ -1,0 +1,26 @@
+{
+  "case_id": "T07",
+  "purpose": "Prove an active objection prevents cluster mutation",
+  "operation_id": "tf5-t07-assess-objection",
+  "contract": "0x8A9c3Ae6521a1d452253F640a615937c6cf9d00D",
+  "source_sha256": "85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1",
+  "actor": "actor19",
+  "sender": "0x9Ec6a971FF91c7540cCe6432E7abf7eCE005d5a5",
+  "method": "assess_proposal",
+  "args": [4],
+  "transaction_hash": "0x53ecba7f079a045dcb3995709aa9c0d874af2a03c32f02c7428a4d3ebe54b502",
+  "lifecycle": "FINALIZED",
+  "execution": "FINISHED_WITH_RETURN",
+  "consensus": "MAJORITY_AGREE",
+  "readback": {
+    "status": "UNRESOLVED",
+    "attempts": 1,
+    "objection_count": 1,
+    "objection_status": "ACTIVE",
+    "outcome": "UNRESOLVED",
+    "objection_guard_applied": true,
+    "target_cluster_id": 0,
+    "reason": "Active objections require manual review; no cluster mutation was applied."
+  },
+  "result": "PASS"
+}

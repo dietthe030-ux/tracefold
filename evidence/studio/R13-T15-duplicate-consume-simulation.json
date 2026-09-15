@@ -1,0 +1,1 @@
+{"case_id":"T15","method":"consume_incident fee simulation","args":["tf5-incident-001","CVE-2024-26130"],"broadcast":false,"simulation_execution":"ERROR","rollback":"Incident already consumed for this caller and context","authoritative_post_counts":{"consumption_count":1},"result":"PASS"}

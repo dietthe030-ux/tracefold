@@ -1,0 +1,26 @@
+{
+  "hash": "0xc1100902b64c68cce5d0eae848983af539a3ffd0935ec34fad43e860dff8f409",
+  "status": "FINALIZED",
+  "execution": "FINISHED_WITH_RETURN",
+  "consensus": "MAJORITY_AGREE",
+  "proposal": {
+    "attempts": 0,
+    "canonical_ids": [
+      "CVE-2024-26130",
+      "PYSEC-2023-185"
+    ],
+    "client_nonce": "tf5-cross",
+    "conflict_reason": "Identifiers already resolve to different clusters; Tracefold preserved both clusters and blocked automatic mutation.",
+    "conflicting_cluster_ids": [
+      1,
+      2
+    ],
+    "created_at": "2026-09-15T20:50:16.712480+00:00",
+    "last_assessed_at": "",
+    "latest_assessment": null,
+    "objection_count": 0,
+    "proposal_id": 3,
+    "proposer": "0x9Ec6a971FF91c7540cCe6432E7abf7eCE005d5a5",
+    "status": "CONFLICT"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "hash": "0x1ee611ac17e450f77a2ca99194a88f7539c81cc7b3749cbb1268227ea24bdb39",
+  "status": "FINALIZED",
+  "execution": "FINISHED_WITH_RETURN",
+  "consensus": "MAJORITY_AGREE",
+  "proposal": {
+    "attempts": 0,
+    "canonical_ids": [
+      "CVE-2022-40897",
+      "PYSEC-2022-43012"
+    ],
+    "client_nonce": "tf5-objection",
+    "conflict_reason": "",
+    "conflicting_cluster_ids": [],
+    "created_at": "2026-09-15T20:51:28.841387+00:00",
+    "last_assessed_at": "",
+    "latest_assessment": null,
+    "objection_count": 0,
+    "proposal_id": 4,
+    "proposer": "0x9Ec6a971FF91c7540cCe6432E7abf7eCE005d5a5",
+    "status": "PROPOSED"
+  }
+}

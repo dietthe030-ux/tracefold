@@ -1,0 +1,25 @@
+{
+  "hash": "0xb9d40feacdc79bb086727e249ecb98511d0f5919f42de1bd3c3175ab9ceffd15",
+  "status": "FINALIZED",
+  "execution": "FINISHED_WITH_RETURN",
+  "consensus": "MAJORITY_AGREE",
+  "created_at": "2026-09-15T20:45:49.111816+00:00",
+  "proposal": {
+    "attempts": 0,
+    "canonical_ids": [
+      "CVE-2024-26130",
+      "PYSEC-2024-225"
+    ],
+    "client_nonce": "tf5-alias",
+    "conflict_reason": "",
+    "conflicting_cluster_ids": [],
+    "created_at": "2026-09-15T20:45:49.111816+00:00",
+    "last_assessed_at": "",
+    "latest_assessment": null,
+    "objection_count": 0,
+    "proposal_id": 1,
+    "proposer": "0x9Ec6a971FF91c7540cCe6432E7abf7eCE005d5a5",
+    "status": "PROPOSED"
+  },
+  "timestampEquivalent": true
+}
