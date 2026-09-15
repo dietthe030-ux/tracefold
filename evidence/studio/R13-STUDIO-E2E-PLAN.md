@@ -1,6 +1,6 @@
 # Tracefold R13 Studio E2E matrix
 
-Status: PRE_DEPLOY draft. Artifact revision is `PENDING_TECHNICAL_REVISION`. Candidate contract source is 50,472 bytes with SHA-256 `85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1`. Target: `studio-dev`, chain 61997, RPC `https://studio-dev.genlayer.com/api`. Deployer, upgrader and test actor: `actor19`, public address `0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`.
+Status: PRE_DEPLOY draft. Artifact revision is `dd96d6eea0faaf36ea8e1c269d5bc57aeeeed863`. Candidate contract source is 50,472 bytes with SHA-256 `85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1`. Target: `studio-dev`, chain 61997, RPC `https://studio-dev.genlayer.com/api`. Deployer, upgrader and test actor: `actor19`, public address `0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`.
 
 Addresses `0xD99Bf40623A7554256F18168C64B482777f10237`, `0x5E2899A296378a42d2F5542507cac3094bD8b84E`, `0x4939F578D1d49F6fD01aFfEC997e11E8d256C61c` and `0x769f408F69fc2ef93f5D59853aba14FF4ef1226e` are retired. No further writes are authorized against them. Every `tf3-*` and `tf4-*` operation is retired. R12 uses only the fresh `tf5-*` IDs below.
 
@@ -27,4 +27,5 @@ The exact GenLayerJS 2.0.0-rc.1 route is used where an empty positional string i
 | T15 | `tf5-t15-duplicate-consume`; fee simulation of the same consume call | Exact duplicate error; no broadcast; receipt and counts unchanged. |
 
 Dependent cases execute sequentially. T12-T15 may run while waiting for T11 cooldown. Exact local GHSA multi-package coverage and historical R02 remain scoped corroboration only. Any source, constructor, actor or network change invalidates this matrix.
+
 
