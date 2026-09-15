@@ -1,0 +1,285 @@
+{
+  "checkedAt": "2026-09-15T16:18:51.467Z",
+  "network": "studio-dev",
+  "chainId": 61997,
+  "rpc": "https://studio-dev.genlayer.com/api",
+  "sdk": "genlayer-js@2.0.0-rc.1",
+  "schema": {
+    "ctor": {
+      "params": [
+        [
+          "upgrader_address",
+          "string"
+        ]
+      ],
+      "kwparams": {}
+    },
+    "methods": {
+      "assess_proposal": {
+        "params": [
+          [
+            "proposal_id",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": false,
+        "ret": "string",
+        "payable": false
+      },
+      "consume_incident": {
+        "params": [
+          [
+            "context_hash",
+            "string"
+          ],
+          [
+            "cluster_or_alias_id",
+            "string"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": false,
+        "ret": "bool",
+        "payable": false
+      },
+      "get_assessment_history": {
+        "params": [
+          [
+            "proposal_id",
+            "int"
+          ],
+          [
+            "offset",
+            "int"
+          ],
+          [
+            "limit",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "get_cluster": {
+        "params": [
+          [
+            "cluster_id",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "get_conflict_status": {
+        "params": [
+          [
+            "proposal_id",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "get_counts": {
+        "params": [],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "get_latest_assessment": {
+        "params": [
+          [
+            "proposal_id",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "get_paged_clusters": {
+        "params": [
+          [
+            "offset",
+            "int"
+          ],
+          [
+            "limit",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "get_paged_objections": {
+        "params": [
+          [
+            "proposal_id",
+            "int"
+          ],
+          [
+            "offset",
+            "int"
+          ],
+          [
+            "limit",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "get_paged_proposals": {
+        "params": [
+          [
+            "offset",
+            "int"
+          ],
+          [
+            "limit",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "get_proposal": {
+        "params": [
+          [
+            "proposal_id",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "get_proposal_by_nonce": {
+        "params": [
+          [
+            "proposer",
+            "address"
+          ],
+          [
+            "client_nonce",
+            "string"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "int"
+      },
+      "get_upgrader": {
+        "params": [],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "address"
+      },
+      "is_consumed": {
+        "params": [
+          [
+            "caller",
+            "address"
+          ],
+          [
+            "context_hash",
+            "string"
+          ],
+          [
+            "cluster_or_alias_id",
+            "string"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "bool"
+      },
+      "propose_alias_set": {
+        "params": [
+          [
+            "client_nonce",
+            "string"
+          ],
+          [
+            "cve_id",
+            "string"
+          ],
+          [
+            "ghsa_id",
+            "string"
+          ],
+          [
+            "osv_id",
+            "string"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": false,
+        "ret": "int",
+        "payable": false
+      },
+      "record_objection": {
+        "params": [
+          [
+            "proposal_id",
+            "int"
+          ],
+          [
+            "reason_code",
+            "string"
+          ],
+          [
+            "note",
+            "string"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": false,
+        "ret": "int",
+        "payable": false
+      },
+      "resolve_alias": {
+        "params": [
+          [
+            "alias_id",
+            "string"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "retry_unresolved": {
+        "params": [
+          [
+            "proposal_id",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": false,
+        "ret": "string",
+        "payable": false
+      },
+      "upgrade": {
+        "params": [
+          [
+            "new_code",
+            "bytes"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": false,
+        "ret": "null",
+        "payable": false
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+# Implementation change log
+
+- Created a fresh `Tracefold` contract and storage namespace from the verified reference logic; no runtime state or deployment identity was copied.
+- Added bounded assessment history, explicit cross-cluster `CONFLICT` records, and an objection guard that prevents cluster mutation.
+- Adapted the contract to GenVM v0.3, current storage types, Studio Devnet, and a fresh constructor/upgrader boundary.
+- Built a new two-layer visual system: editorial story/docs first, operational evidence workspace second.
+- Replaced legacy wallet booleans with one reducer covering discovery, chooser, connection, wrong-chain recovery, account changes, disconnect, and write-provider eligibility.
+- Added canonical wallet discovery cardinality, canonical local wallet presentation, exact provider binding, explicit network recovery, and fee/balance validation.
+- Added durable single-flight write intents, exact fee estimates, hash preservation, current SDK finalization, semantic execution checks, authoritative readback, and reconciliation without resubmission.
+- Added canonical public transaction phases, accessible live status, visible hash/copy controls, terminal failure/rejection states, and recovery action.
+- Added focused contract, validator-disagreement, wallet, RPC, fee, transaction-phase, component, responsive, and production-build verification.
+
+Mechanical corrections made during implementation: renamed copied local storage/nonce keys, restored Tailwind's PostCSS pipeline after visual QA exposed missing utility output, corrected the assessment-history ABI arguments from the live schema, and separated the GenLayer SDK bundle from application code.

@@ -1,0 +1,21 @@
+npm notice run tracefold@1.0.0 test
+npm notice run vitest run --run
+
+ RUN  v3.2.7 E:/Genlayer-Projects/tracefold/frontend
+
+ ✓ src/__tests__/pendingTxStore.test.ts (4 tests) 3ms
+ ✓ src/__tests__/validation.test.ts (15 tests) 5ms
+ ✓ src/__tests__/storageProbe.test.ts (3 tests) 6ms
+ ✓ src/__tests__/walletState.test.ts (3 tests) 5ms
+ ✓ src/__tests__/writeFees.test.ts (2 tests) 11ms
+ ✓ src/__tests__/eip6963.test.ts (15 tests) 87ms
+ ✓ src/__tests__/rpcClient.test.ts (8 tests) 43ms
+ ✓ src/__tests__/transactionProgress.test.tsx (10 tests) 62ms
+ ✓ src/__tests__/walletModal.test.tsx (5 tests) 78ms
+ ✓ src/__tests__/components.test.tsx (6 tests) 276ms
+
+ Test Files  10 passed (10)
+      Tests  71 passed (71)
+   Start at  23:22:10
+   Duration  2.69s (transform 569ms, setup 1.03s, collect 3.57s, tests 577ms, environment 6.70s, prepare 3.41s)
+
