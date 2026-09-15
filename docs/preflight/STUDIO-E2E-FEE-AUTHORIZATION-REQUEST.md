@@ -1,5 +1,7 @@
 # Studio E2E fee authorization request
 
+Historical target-scoped request for the invalidated `df837d5` source/address. It is exhausted for release purposes by the E02 product failure and does not authorize corrected-source replacement deployment or E2E. See `E02-REPLACEMENT-FEE-REQUEST.md`.
+
 Status: awaiting explicit user response.
 
 - Contract: `0xD99Bf40623A7554256F18168C64B482777f10237`

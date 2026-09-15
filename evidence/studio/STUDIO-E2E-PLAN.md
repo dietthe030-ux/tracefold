@@ -1,5 +1,7 @@
 # Tracefold Studio E2E plan
 
+Historical plan for the invalidated `df837d5` source/address only. E01 passed, E02 failed, and no dependent case ran. This plan and its former fee authorization cannot be used for the corrected source; see `E02-REPLACEMENT-E2E-PLAN.md`.
+
 Exact target: contract `0xD99Bf40623A7554256F18168C64B482777f10237`, source SHA-256 `DE542180BA58FE382F9E55CBD8C7776C989B80766FC87F4882F3CB27FF71552D`, Git revision `df837d56c3cbb0db76d0e08ad57d582659dbe51b`, actor `actor19` / `0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`, Studio Dev chain 61997.
 
 Cases are sequential. Every write gets a fresh read-only fee estimate, one stable operation ID, one broadcast, bounded receipt observation, semantic execution inspection, consensus/finality proof and authoritative pre/post readback. A transport timeout keeps the same hash and operation ID. All attempts, including expected failures, enter the evidence ledger.
