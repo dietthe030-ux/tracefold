@@ -28,5 +28,32 @@
   "report": {
     "path": "docs/preflight/R12-PRE-DEPLOY-APPROVAL-REPORT.md",
     "sha256": "4CCC78EC928A4897CFEB3AB8F612907F9F6965D8DAF555F943804EB245AA5AEE"
-  }
+  },
+  "revision": "27d6e590e42db20f36f82a244aeed6a2c072c7c7",
+  "artifacts": [
+    {
+      "sha256": "E20CB3BE22885CF92BFA91376EB615B6ACEB8DF024421EB19F29108D33315D2C",
+      "path": "contracts/tracefold.py"
+    },
+    {
+      "sha256": "9E7B81892BBEC69DA872AA7E253B59B5724C2604F5A369C50B997706378DE756",
+      "path": "docs/preflight/R12-PRE-DEPLOY-PACKAGE.md"
+    },
+    {
+      "sha256": "5C303E71F7DEF5642723278E589F3690D85CC7C6A606CD6EC3D0D5372CAD60A0",
+      "path": "evidence/studio/R12-STUDIO-E2E-PLAN.md"
+    },
+    {
+      "sha256": "B17A6EB565B8B7759DEA217CE5A414F65B96FE2733D385D5A159D9A45BC2AE7C",
+      "path": "evidence/pre-deploy/r12-contract-tests.txt"
+    },
+    {
+      "sha256": "BB4CDEE8975C51A0441D7101EFE5076B9E29217100AB33739C783C76D9310251",
+      "path": "evidence/pre-deploy/r12-contract-lint.txt"
+    },
+    {
+      "sha256": "69FF5EF35AC84050C8AC919398BDEB2857C5E36761234A9592A2718E7FA65228",
+      "path": "evidence/pre-deploy/r12-live-schema.json"
+    }
+  ]
 }
