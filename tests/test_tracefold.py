@@ -100,14 +100,17 @@ def test_transaction_datetime_is_authoritative(direct_vm, direct_deploy):
         proposal_id = contract.propose_alias_set("nonce-authoritative-time", CVE_ID)
 
     proposal = json.loads(contract.get_proposal(proposal_id))
-    assert proposal["created_at"] == transaction_time
+    assert proposal["created_at"] == "2024-01-02T03:04:05+00:00"
 
 
-def test_missing_transaction_datetime_fails_closed(direct_deploy):
+def test_missing_transaction_datetime_fails_closed(monkeypatch, direct_deploy):
     contract = deploy_contract(direct_deploy)
     instance = object.__getattribute__(contract, "_instance")
     contract_module = sys.modules[type(instance).__module__]
-    contract_module.gl.message_raw = {}
+    def unavailable():
+        raise RuntimeError("timestamp unavailable")
+
+    monkeypatch.setattr(contract_module.gl.vm, "get_timestamp", unavailable)
 
     with pytest.raises(Exception) as exc:
         contract_module._get_current_datetime()
@@ -129,7 +132,7 @@ def test_malformed_retry_timestamps_fail_closed_without_mutation(direct_vm, dire
     with direct_vm.prank(BOB):
         with pytest.raises(Exception) as exc:
             contract.retry_unresolved(proposal_id)
-    assert "Authoritative transaction datetime is invalid" in str(exc.value)
+    assert "Authoritative transaction datetime is unavailable" in str(exc.value)
     assert contract.get_proposal(proposal_id) == before
     assert contract.get_counts() == counts_before
 

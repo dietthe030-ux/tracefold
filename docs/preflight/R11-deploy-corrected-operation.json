@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "operationId": "tf3-deploy-2ed3f93-encoding-fixed",
+  "status": "INTENT_LOCKED_NOT_YET_BROADCAST",
+  "source": "contracts/tracefold.py",
+  "sourceSha256": "2ED3F93EF341BB98CDD288522D1868AE5DC27EFAB633639552E3D1DA7395377F",
+  "network": "studio-dev",
+  "chainId": 61997,
+  "rpc": "https://studio-dev.genlayer.com/api",
+  "actor": "actor19",
+  "sender": "0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5",
+  "constructorArgs": [
+    "0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5"
+  ],
+  "feeValueWei": "100000000000010352",
+  "preflightReceipt": "6b287d90-e6a7-41de-97b7-d185f8e31f15"
+}

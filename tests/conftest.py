@@ -8,11 +8,11 @@ harness restore stdin normally; Linux behavior is unchanged.
 
 from __future__ import annotations
 
+import datetime
 import functools
 import os
-import sys
 
-from gltest.direct import loader, vm, wasi_mock
+from gltest.direct import loader, wasi_mock
 
 
 if os.name == "nt":
@@ -41,25 +41,10 @@ def _llm_text_response(vm, data):
 wasi_mock._handle_llm_request = _llm_text_response
 
 
-# DirectVM patches datetime.now() for warp(), but genlayer-test 0.30.0rc2 does
-# not refresh the public raw transaction datetime used by production GenVM.
-_refresh_gl_message = vm.VMContext._refresh_gl_message
-
-
-def _refresh_gl_message_with_datetime(self) -> None:
-    _refresh_gl_message(self)
-    gl_module = sys.modules.get("genlayer.gl")
-    if gl_module is not None and isinstance(getattr(gl_module, "message_raw", None), dict):
-        gl_module.message_raw["datetime"] = self._datetime
-
-
-vm.VMContext._refresh_gl_message = _refresh_gl_message_with_datetime
-
-
 _make_contract_proxy = loader._make_contract_proxy
 
 
-def _make_contract_proxy_with_datetime(instance):
+def _make_contract_proxy_with_timestamp(instance):
     proxy = _make_contract_proxy(instance)
     original_getattr = type(proxy).__getattr__
 
@@ -76,9 +61,13 @@ def _make_contract_proxy_with_datetime(instance):
                 target = target.__wrapped__
             contract_gl = getattr(target, "__func__", target).__globals__.get("gl")
             if current_vm is not None and contract_gl is not None:
-                if not isinstance(getattr(contract_gl, "message_raw", None), dict):
-                    contract_gl.message_raw = {}
-                contract_gl.message_raw["datetime"] = current_vm._datetime
+                def _timestamp_hook(active_vm, request):
+                    if "GetTimestamp" not in request:
+                        return None
+                    value = active_vm._datetime.replace("Z", "+00:00")
+                    return int(datetime.datetime.fromisoformat(value).timestamp())
+
+                current_vm._gl_call_hook = _timestamp_hook
             return attribute(*args, **kwargs)
 
         return _call
@@ -87,4 +76,4 @@ def _make_contract_proxy_with_datetime(instance):
     return proxy
 
 
-loader._make_contract_proxy = _make_contract_proxy_with_datetime
+loader._make_contract_proxy = _make_contract_proxy_with_timestamp

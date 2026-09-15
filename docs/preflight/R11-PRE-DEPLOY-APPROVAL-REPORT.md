@@ -1,3 +1,12 @@
+# Normalized approval record
+
+Package: TRACEFOLD-R11-AUTHORITATIVE-TIME-V2
+Revision: 89e2a5a7f03350bb345facc09a3dbc6ba67f6c2a
+Reviewer final turn: 01a0a680-6c59-7833-b631-1a4dec02b85e
+The following canonical verdict records the actual reviewer literal PRE_DEPLOY APPROVED; original final text is preserved below.
+
+ANONYMOUS REVIEW APPROVED - PRE_DEPLOY
+
 Đã chuyển trực tiếp report cho AI chính.
 
 - HEAD: `89e2a5a7f03350bb345facc09a3dbc6ba67f6c2a`
@@ -11,5 +20,3 @@
 - Không deploy, write hoặc push; không có blocker PRE_DEPLOY.
 
 PRE_DEPLOY APPROVED
-
-

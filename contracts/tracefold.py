@@ -167,14 +167,13 @@ def _parse_iso_timestamp(ts_str: str) -> int:
 
 
 def _get_current_datetime() -> str:
-    if hasattr(gl, "message_raw") and isinstance(gl.message_raw, dict):
-        value = gl.message_raw.get("datetime")
-        if isinstance(value, str) and value.strip():
-            normalized = value.strip()
-            if _parse_iso_timestamp(normalized) > 0:
-                return normalized
-            raise gl.vm.UserError("Authoritative transaction datetime is invalid")
-    raise gl.vm.UserError("Authoritative transaction datetime is unavailable")
+    try:
+        value = gl.vm.get_timestamp()
+    except Exception as exc:
+        raise gl.vm.UserError("Authoritative transaction datetime is unavailable") from exc
+    if not isinstance(value, datetime.datetime):
+        raise gl.vm.UserError("Authoritative transaction datetime is invalid")
+    return value.astimezone(datetime.timezone.utc).isoformat()
 
 
 class Tracefold(gl.contract.Contract):

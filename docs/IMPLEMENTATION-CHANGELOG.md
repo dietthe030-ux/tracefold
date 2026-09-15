@@ -17,3 +17,6 @@ The R11 Studio cooldown probe exposed a runtime-clock defect: `_get_current_date
 PRE_DEPLOY review corrections: aligned all objection reason codes and the primary CVE field with the contract ABI; made package identity deterministic over ecosystem plus name; prevented model output from strengthening package/cross-reference evidence; recomputed the fingerprint after the objection guard; stored final assessment history after cluster assignment; added bounded authoritative consumption history; and bound every frontend write readback to an exact pre/post state delta. The RPC matrix now describes the implemented 5-second/24-attempt finality observation and actual no-auto-retry read behavior.
 
 The correction review found one remaining early-return inconsistency. The unavailable/insufficient-evidence branch now uses the same final-field fingerprint helper as every other assessment path, with an independent hash-reproduction regression.
+
+## R12 - Studio deterministic timestamp
+Replaced internal gl.message_raw time access with official gl.vm.get_timestamp(). Added DirectVM opcode shim and retained fail-closed/current-time and stored-time corruption regressions. ABI/storage/product scope unchanged.

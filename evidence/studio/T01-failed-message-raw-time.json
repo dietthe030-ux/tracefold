@@ -1,0 +1,13 @@
+{
+  "caseId": "T01",
+  "hash": "0x390fe3a413e7fbbbb0521af2c2a9abb879820cdda2be2266248e19555b6a81d9",
+  "status": "FINALIZED",
+  "execution": "FINISHED_WITH_ERROR",
+  "consensus": "MAJORITY_AGREE",
+  "created_at": "2026-09-15T19:27:18.712703+00:00",
+  "error": "Authoritative transaction datetime is unavailable",
+  "address": "0x769f408F69fc2ef93f5D59853aba14FF4ef1226e",
+  "sender": "0x9Ec6a971FF91c7540cCe6432E7abf7eCE005d5a5",
+  "rolledBack": true,
+  "rootCause": "Studio Dev GenVM deterministic execution omits datetime from gl.message_raw; official gl.vm.get_timestamp() is the supported clock API"
+}
