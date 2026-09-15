@@ -170,7 +170,10 @@ def _get_current_datetime() -> str:
     if hasattr(gl, "message_raw") and isinstance(gl.message_raw, dict):
         value = gl.message_raw.get("datetime")
         if isinstance(value, str) and value.strip():
-            return value.strip()
+            normalized = value.strip()
+            if _parse_iso_timestamp(normalized) > 0:
+                return normalized
+            raise gl.vm.UserError("Authoritative transaction datetime is invalid")
     raise gl.vm.UserError("Authoritative transaction datetime is unavailable")
 
 
@@ -391,10 +394,11 @@ class Tracefold(gl.contract.Contract):
         now_ts = _parse_iso_timestamp(now_str)
         last_ts = _parse_iso_timestamp(last_assessed)
 
-        if now_ts > 0 and last_ts > 0:
-            if now_ts < last_ts + RETRY_COOLDOWN_SECONDS:
-                remaining = (last_ts + RETRY_COOLDOWN_SECONDS) - now_ts
-                raise gl.vm.UserError(f"Retry cooldown active ({remaining}s remaining; cooldown is {RETRY_COOLDOWN_SECONDS}s)")
+        if last_ts <= 0:
+            raise gl.vm.UserError("Stored assessment datetime is invalid")
+        if now_ts < last_ts + RETRY_COOLDOWN_SECONDS:
+            remaining = (last_ts + RETRY_COOLDOWN_SECONDS) - now_ts
+            raise gl.vm.UserError(f"Retry cooldown active ({remaining}s remaining; cooldown is {RETRY_COOLDOWN_SECONDS}s)")
 
         return self._execute_assessment(proposal_id, prop)
 

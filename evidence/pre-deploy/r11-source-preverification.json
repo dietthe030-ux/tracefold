@@ -1,0 +1,104 @@
+{
+  "checkedAt": "2026-09-15T19:04:39.4810263+00:00",
+  "networkUse": "read-only publisher preverification; no Studio RPC/write",
+  "pairs": [
+    {
+      "case": "cluster1",
+      "cve": "CVE-2024-26130",
+      "osv": "PYSEC-2024-225",
+      "nvd": {
+        "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2024-26130",
+        "status": 200,
+        "returnedId": "CVE-2024-26130",
+        "lastModified": "2026-06-17T07:17:09.793",
+        "bodySha256": "BA19D6E701338DCDB71970E61D4C76BFFCB9AF3BDA1E7B7207A116DA6AE4DC09"
+      },
+      "osvSource": {
+        "url": "https://api.osv.dev/v1/vulns/PYSEC-2024-225",
+        "status": 200,
+        "returnedId": "PYSEC-2024-225",
+        "aliases": [
+          "CVE-2024-26130",
+          "GHSA-6vqw-3v5j-54x4"
+        ],
+        "package": "cryptography",
+        "modified": "2026-06-10T17:14:19.430885581Z",
+        "bodySha256": "C21931D17EEFC832C46CAA93B5FFC4BB30D1F5508B979298438CC87C138B6FCF"
+      }
+    },
+    {
+      "case": "cluster2",
+      "cve": "CVE-2023-41335",
+      "osv": "PYSEC-2023-185",
+      "nvd": {
+        "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2023-41335",
+        "status": 200,
+        "returnedId": "CVE-2023-41335",
+        "lastModified": "2026-06-17T06:21:51.08",
+        "bodySha256": "DE9153EF51B94B3E7450BC464320B7A0FEBB2860D70D56E27ED2D7372530B080"
+      },
+      "osvSource": {
+        "url": "https://api.osv.dev/v1/vulns/PYSEC-2023-185",
+        "status": 200,
+        "returnedId": "PYSEC-2023-185",
+        "aliases": [
+          "CVE-2023-41335",
+          "GHSA-4f74-84v3-j9q5"
+        ],
+        "package": "matrix-synapse",
+        "modified": "2023-11-08T04:13:25.665748Z",
+        "bodySha256": "8AF27A47DFEACFAA0798FE18A370473883A469A16EC0391BA9D41F4438143CF5"
+      }
+    },
+    {
+      "case": "objection",
+      "cve": "CVE-2022-40897",
+      "osv": "PYSEC-2022-43012",
+      "nvd": {
+        "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2022-40897",
+        "status": 200,
+        "returnedId": "CVE-2022-40897",
+        "lastModified": "2026-06-17T05:02:12.993",
+        "bodySha256": "58D421021D10EAF2EF58A14040BDD1BCBA9D6F51F94B7FE45C36A35D30DCFCDD"
+      },
+      "osvSource": {
+        "url": "https://api.osv.dev/v1/vulns/PYSEC-2022-43012",
+        "status": 200,
+        "returnedId": "PYSEC-2022-43012",
+        "aliases": [
+          "BIT-setuptools-2022-40897",
+          "CVE-2022-40897",
+          "GHSA-r9hx-vwmv-q579"
+        ],
+        "package": "setuptools",
+        "modified": "2026-06-10T17:02:40.148961359Z",
+        "bodySha256": "9ACBD21D93D9CD11362C0B52D4B369835D1EBBB080467D871601082D432C8349"
+      }
+    },
+    {
+      "case": "distinct",
+      "cve": "CVE-2021-45046",
+      "osv": "PYSEC-2022-43012",
+      "nvd": {
+        "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2021-45046",
+        "status": 200,
+        "returnedId": "CVE-2021-45046",
+        "lastModified": "2026-06-17T04:13:05.57",
+        "bodySha256": "200AF9725877BB895CA4139F92A271E48846B5B911120CB22ED4D995F091756C"
+      },
+      "osvSource": {
+        "url": "https://api.osv.dev/v1/vulns/PYSEC-2022-43012",
+        "status": 200,
+        "returnedId": "PYSEC-2022-43012",
+        "aliases": [
+          "BIT-setuptools-2022-40897",
+          "CVE-2022-40897",
+          "GHSA-r9hx-vwmv-q579"
+        ],
+        "package": "setuptools",
+        "modified": "2026-06-10T17:02:40.148961359Z",
+        "bodySha256": "9ACBD21D93D9CD11362C0B52D4B369835D1EBBB080467D871601082D432C8349"
+      }
+    }
+  ]
+}

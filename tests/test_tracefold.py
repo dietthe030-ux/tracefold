@@ -115,6 +115,37 @@ def test_missing_transaction_datetime_fails_closed(direct_deploy):
     assert "Authoritative transaction datetime is unavailable" in str(exc.value)
 
 
+def test_malformed_retry_timestamps_fail_closed_without_mutation(direct_vm, direct_deploy):
+    contract = deploy_contract(direct_deploy)
+    direct_vm.mock_web(r".*services\.nvd\.nist\.gov.*", {"status": 500, "body": "Unavailable"})
+
+    with direct_vm.prank(ALICE):
+        proposal_id = contract.propose_alias_set("nonce-invalid-time", CVE_ID)
+        assert contract.assess_proposal(proposal_id) == "UNRESOLVED"
+
+    before = contract.get_proposal(proposal_id)
+    counts_before = contract.get_counts()
+    direct_vm.warp("not-an-iso-timestamp")
+    with direct_vm.prank(BOB):
+        with pytest.raises(Exception) as exc:
+            contract.retry_unresolved(proposal_id)
+    assert "Authoritative transaction datetime is invalid" in str(exc.value)
+    assert contract.get_proposal(proposal_id) == before
+    assert contract.get_counts() == counts_before
+
+    direct_vm.warp("2026-08-20T12:00:00Z")
+    stored = json.loads(before)
+    stored["last_assessed_at"] = "corrupt-stored-time"
+    contract.proposals[proposal_id] = json.dumps(stored, sort_keys=True, separators=(",", ":"))
+    corrupt_before = contract.get_proposal(proposal_id)
+    with direct_vm.prank(BOB):
+        with pytest.raises(Exception) as exc:
+            contract.retry_unresolved(proposal_id)
+    assert "Stored assessment datetime is invalid" in str(exc.value)
+    assert contract.get_proposal(proposal_id) == corrupt_before
+    assert contract.get_counts() == counts_before
+
+
 def mock_sources(direct_vm, nvd=SAMPLE_NVD_BODY, ghsa=SAMPLE_GHSA_BODY, osv=SAMPLE_OSV_BODY):
     direct_vm.mock_web(r".*services\.nvd\.nist\.gov.*", {"status": 200, "body": nvd})
     direct_vm.mock_web(r".*api\.github\.com.*", {"status": 200, "body": ghsa})
