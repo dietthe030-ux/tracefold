@@ -11,19 +11,24 @@ interface FileObjectionProps {
 
 const REASON_CODES: { code: ObjectionReasonCode; label: string; description: string }[] = [
   {
-    code: 'MISATTRIBUTED_PACKAGE',
-    label: 'Misattributed Package Coordinates',
-    description: 'The candidate vulnerability records describe distinct packages or independent software components.',
-  },
-  {
-    code: 'CONFLICTING_VERSION_RANGE',
-    label: 'Conflicting Version Ranges',
-    description: 'The vulnerability intervals indicate separate patch lifecycles and disconnected affected versions.',
-  },
-  {
     code: 'DIFFERENT_ROOT_CAUSE',
-    label: 'Different Root Cause / Trigger',
-    description: 'Distinct CWE vulnerabilities or trigger mechanisms that should not be merged into the same cluster.',
+    label: 'Different Root Cause',
+    description: 'The records describe distinct flaws or trigger mechanisms.',
+  },
+  {
+    code: 'SEPARATE_RELEASES',
+    label: 'Separate Releases',
+    description: 'The evidence points to separate release or remediation lifecycles.',
+  },
+  {
+    code: 'ECOSYSTEM_SPLIT',
+    label: 'Ecosystem Split',
+    description: 'The package coordinates belong to different ecosystems.',
+  },
+  {
+    code: 'VENDOR_DISPUTE',
+    label: 'Vendor Dispute',
+    description: 'A vendor or maintainer disputes the proposed identity mapping.',
   },
   {
     code: 'OTHER',
@@ -36,7 +41,7 @@ export const FileObjection: React.FC<FileObjectionProps> = ({ initialProposalId 
   const { proposals, fileObjection, getObjectionsForProposal } = useRegistry();
   const { isConnected, openWalletModal } = useWallet();
 
-  const proposedOnly = proposals.filter((p) => p.status === 'PROPOSED');
+  const proposedOnly = proposals.filter((p) => p.status === 'PROPOSED' || p.status === 'UNRESOLVED');
 
   const [selectedPid, setSelectedPid] = useState<number>(
     initialProposalId && proposedOnly.some((p) => p.proposal_id === initialProposalId)
@@ -44,7 +49,7 @@ export const FileObjection: React.FC<FileObjectionProps> = ({ initialProposalId 
       : proposedOnly[0]?.proposal_id || 0
   );
 
-  const [reasonCode, setReasonCode] = useState<ObjectionReasonCode>('MISATTRIBUTED_PACKAGE');
+  const [reasonCode, setReasonCode] = useState<ObjectionReasonCode>('DIFFERENT_ROOT_CAUSE');
   const [note, setNote] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [historicalObjections, setHistoricalObjections] = useState<ObjectionRecord[]>([]);
@@ -110,7 +115,7 @@ export const FileObjection: React.FC<FileObjectionProps> = ({ initialProposalId 
           <ShieldAlert className="w-12 h-12 text-gray-600 mx-auto mb-3" />
           <h3 className="text-base font-semibold text-gray-200 mb-1">No Active Proposals Open for Objection</h3>
           <p className="text-xs text-gray-400 max-w-md mx-auto">
-            Objections can only be recorded against proposals in PROPOSED status. All existing proposals have already been adjudicated.
+            Objections can be recorded while a proposal is pending or unresolved. No current proposal is open for objection.
           </p>
         </div>
       ) : (

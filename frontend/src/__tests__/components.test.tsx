@@ -30,6 +30,7 @@ describe('Frontend Components & User Journeys', () => {
     });
     vi.spyOn(rpcClient, 'getProposals').mockResolvedValue([]);
     vi.spyOn(rpcClient, 'getClusters').mockResolvedValue([]);
+    vi.spyOn(rpcClient, 'getConsumptions').mockResolvedValue([]);
     vi.spyOn(rpcClient, 'getUpgrader').mockResolvedValue('');
   });
 
@@ -96,6 +97,8 @@ describe('Frontend Components & User Journeys', () => {
 
     expect(screen.getByDisplayValue('CVE-2023-4863')).toBeInTheDocument();
     expect(screen.getByDisplayValue('GHSA-j7hp-h8jx-5ppr')).toBeInTheDocument();
+    fireEvent.change(screen.getByPlaceholderText('e.g. CVE-2024-3094'), { target: { value: 'GHSA-j7hp-h8jx-5ppr' } });
+    expect(screen.getByText(/Invalid CVE/i)).toBeInTheDocument();
   });
 
   it('J3: Proposal Assessment Tracker displays proposals and filters by status', async () => {
@@ -197,6 +200,9 @@ describe('Frontend Components & User Journeys', () => {
     });
 
     expect(screen.getByDisplayValue('Test objection note on package coordinates.')).toBeInTheDocument();
+    for (const code of ['DIFFERENT_ROOT_CAUSE', 'SEPARATE_RELEASES', 'ECOSYSTEM_SPLIT', 'VENDOR_DISPUTE', 'OTHER']) {
+      expect(screen.getByDisplayValue(code)).toBeInTheDocument();
+    }
     expect(
       screen.getByText((_content, element) => element?.tagName?.toLowerCase() === 'span' && element?.textContent?.trim() === '43 / 280')
     ).toBeInTheDocument();

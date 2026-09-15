@@ -13,6 +13,10 @@
 
 Assessment history is capped at three snapshots per proposal. Lists, responses, notes, identifiers, retries, objections, proposals, clusters, and consumption records are bounded to limit storage and RPC cost.
 
+Merge authority is evidence monotonic: deterministic source projections derive exact ecosystem/package coordinates and explicit alias/reference links. Model output can classify and explain the records, but cannot strengthen those deterministic fields or authorize a merge without a raw link. Assessment fingerprints are computed from the final guarded outcome, and the final snapshot is stored consistently in both latest state and history.
+
+Each write intent persists its authoritative pre-state before wallet signing. Finalized objection, assessment/retry, and consumption writes must prove an exact new record or counter/history delta; an older record or unchanged `UNRESOLVED` proposal cannot be attributed to a new transaction.
+
 ## Recovery
 
 Writes use a durable intent journal. Before signing, the client estimates the exact write fee. After submission it saves the transaction hash, waits for GenLayer finalization, checks semantic execution, and verifies the expected contract consequence. A timeout or unavailable RPC retains the hash as `RECONCILING`; the app checks the same operation after reload and never creates a replacement write automatically.

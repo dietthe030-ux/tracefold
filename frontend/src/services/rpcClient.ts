@@ -2,8 +2,10 @@ import { createClient, chains, isSuccessful } from 'genlayer-js';
 import { ExecutionResult, type Hash } from 'genlayer-js/types';
 import {
   ClusterRecord,
+  ConsumptionRecord,
   EIP1193Provider,
   ObjectionRecord,
+  PendingOperation,
   AssessmentRecord,
   ProposalRecord,
   RegistryCounts,
@@ -299,6 +301,21 @@ export class GenLayerRpcClient {
     });
   }
 
+  public async getConsumptions(offset = 0, limit = 20): Promise<ConsumptionRecord[]> {
+    this.requireContractConfigured();
+    const boundedLimit = Math.min(Math.max(limit, 1), 20);
+    const cacheKey = `consumptions:${this.config.contractAddress}:${offset}:${boundedLimit}`;
+    return this.fetchWithCache(cacheKey, async () => {
+      const raw = await this.client.readContract({
+        address: this.config.contractAddress as `0x${string}`,
+        functionName: 'get_paged_consumptions',
+        args: [offset, boundedLimit],
+      });
+      if (typeof raw === 'string') return (JSON.parse(raw).items || []) as ConsumptionRecord[];
+      return ((raw as { items?: ConsumptionRecord[] } | null)?.items || []);
+    });
+  }
+
   public async getCluster(clusterId: number): Promise<ClusterRecord | null> {
     if (!this.isContractConfigured() || clusterId <= 0) return null;
 
@@ -555,11 +572,7 @@ export class GenLayerRpcClient {
 
   public async waitForFinalityAndReadback(
     txHash: string,
-    intent: {
-      method: string;
-      args: unknown[];
-      caller?: string;
-    },
+    intent: Pick<PendingOperation['intent'], 'method' | 'args' | 'caller'> & Partial<Pick<PendingOperation['intent'], 'timestamp' | 'description' | 'before'>>,
     onPollStatus?: (statusName: string) => void
   ): Promise<TransactionReceiptResult> {
     if (this.activePollingLocks.has(txHash)) {
@@ -579,7 +592,7 @@ export class GenLayerRpcClient {
         // GenLayer execution metadata is required for the SUCCESS/ERROR gate.
         fullTransaction: true,
       } as any);
-      const finalStatusName = String((receipt as any).statusName || 'FINALIZED');
+      const finalStatusName = String((receipt as any).statusName || 'UNKNOWN');
       onPollStatus?.('VERIFYING_EXECUTION');
       const explicitExecutionResult = (receipt as any).txExecutionResultName;
       const leaderExecutionResults = (((receipt as any).consensus_data?.leader_receipt || []) as Array<any>)
@@ -605,6 +618,7 @@ export class GenLayerRpcClient {
       }
 
       // Authoritative method-specific readback verification
+      onPollStatus?.('VERIFYING_READBACK');
       this.invalidateCache();
       let readbackData: unknown = null;
       let readbackVerified = false;
@@ -621,16 +635,32 @@ export class GenLayerRpcClient {
           }
         }
       } else if (intent.method === 'record_objection') {
-        const [pid] = intent.args as [number];
+        const [pid, reasonCode, note] = intent.args as [number, string, string];
         const objections = await this.getObjections(pid, 0, 20);
-        if (objections.length > 0) {
+        const expectedIndex = intent.before?.objectionCount;
+        const newRecord = expectedIndex === undefined ? undefined : objections.find((item) =>
+          item.index === expectedIndex &&
+          item.reason_code === reasonCode.trim() &&
+          item.note === note.trim().replace(/\s+/g, ' ') &&
+          item.objector.toLowerCase() === (intent.caller || '').toLowerCase()
+        );
+        if (expectedIndex !== undefined && objections.length === expectedIndex + 1 && newRecord) {
           readbackVerified = true;
           readbackData = objections;
         }
       } else if (intent.method === 'assess_proposal' || intent.method === 'retry_unresolved') {
         const [pid] = intent.args as [number];
         const prop = await this.getProposal(pid);
-        if (prop && prop.status !== 'PROPOSED') {
+        const history = await this.getAssessmentHistory(pid);
+        const before = intent.before;
+        const latest = prop?.latest_assessment;
+        const newHistory = before ? history[before.historyTotal ?? -1] : undefined;
+        if (prop && before && latest &&
+          prop.attempts === (before.attempts ?? -1) + 1 &&
+          history.length === (before.historyTotal ?? -1) + 1 &&
+          prop.last_assessed_at !== before.lastAssessedAt &&
+          newHistory?.fingerprint === latest.fingerprint &&
+          newHistory?.outcome === latest.outcome) {
           readbackVerified = true;
           readbackData = prop;
         }
@@ -638,15 +668,19 @@ export class GenLayerRpcClient {
         const [contextHash, clusterOrAliasId] = intent.args as [string, string];
         const caller = intent.caller || '';
         const consumed = await this.isConsumed(caller, contextHash, clusterOrAliasId);
-        if (consumed) {
+        const baseline = intent.before?.consumptionCount;
+        const records = baseline === undefined ? [] : await this.getConsumptions(baseline, 1);
+        const expectedIndex = (intent.before?.consumptionCount ?? -1) + 1;
+        const record = records.find((item) => item.index === expectedIndex &&
+          item.caller.toLowerCase() === caller.toLowerCase() && item.context_hash === contextHash.trim());
+        if (consumed && baseline !== undefined && records.length === 1 && record) {
           readbackVerified = true;
-          readbackData = { consumed: true, contextHash, clusterOrAliasId };
+          readbackData = record;
         }
       } else {
         readbackVerified = true;
       }
 
-      onPollStatus?.('VERIFYING_READBACK');
       if (!readbackVerified) {
         throw new Error(`Authoritative readback did not verify ${intent.method}`);
       }

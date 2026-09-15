@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "Tue, 15 Sep 2026 16:28:00 GMT",
+  "checkedAt": "Tue, 15 Sep 2026 16:52:00 GMT",
   "endpoint": "https://studio-dev.genlayer.com/api",
   "chainId": 61997,
   "network": "studio-dev",
@@ -45,7 +45,7 @@
     "checked": true,
     "projectSdk": "genlayer-js 2.0.0-rc.1",
     "runtime": "GenVM v0.3.0; GenVM Manager v0.6.0-rc5; py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng",
-    "schema": "live getContractSchemaForCode PASS on exact source SHA256 08A6C58844526B0796C8735883EB10269F1193286416B3972B3AD668C556FFD3",
+    "schema": "live getContractSchemaForCode PASS with 20 intended methods on exact source SHA256 C2E3644C37D20D14FE868B23084ACB73DC7E9C7867BB4BB0988BC4CE5219E159",
     "wrapperSelfTest": "PASS: command guards, duplicate reservation and prompt handshake; no transactions"
   }
 }

@@ -45,9 +45,7 @@ export type ObjectionReasonCode =
   | 'SEPARATE_RELEASES'
   | 'ECOSYSTEM_SPLIT'
   | 'VENDOR_DISPUTE'
-  | 'OTHER'
-  | 'MISATTRIBUTED_PACKAGE'
-  | 'CONFLICTING_VERSION_RANGE';
+  | 'OTHER';
 
 export interface AssessmentRecord {
   outcome: AssessmentOutcome;
@@ -145,6 +143,14 @@ export interface PendingOperation {
     caller: string;
     timestamp: number;
     description: string;
+    before?: {
+      objectionCount?: number;
+      attempts?: number;
+      historyTotal?: number;
+      lastAssessedAt?: string;
+      fingerprint?: string;
+      consumptionCount?: number;
+    };
   };
   hash?: string;
   submittedAt?: number;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRegistry } from '../context/RegistryContext';
 import { useWallet } from '../context/WalletContext';
-import { validateAlias, generateNonce } from '../utils/validation';
+import { validateAlias, validateCveId, generateNonce } from '../utils/validation';
 import { PlusCircle, RefreshCw, AlertCircle, CheckCircle2, ShieldAlert, Sparkles, ArrowRight, Wallet } from 'lucide-react';
 
 interface ProposeAliasSetProps {
@@ -23,7 +23,7 @@ export const ProposeAliasSet: React.FC<ProposeAliasSetProps> = ({ onSuccessNavig
     setClientNonce(generateNonce());
   }, []);
 
-  const val1 = validateAlias(id1);
+  const val1 = validateCveId(id1);
   const val2 = validateAlias(id2);
   const val3 = id3.trim()
     ? validateAlias(id3)
@@ -137,7 +137,7 @@ export const ProposeAliasSet: React.FC<ProposeAliasSetProps> = ({ onSuccessNavig
         {/* Identifier 1 */}
         <div className="space-y-1.5">
           <label className="block text-xs font-semibold text-gray-300">
-            Primary Vulnerability Identifier (CVE / GHSA / OSV) <span className="text-red-400">*</span>
+            Primary CVE Identifier <span className="text-red-400">*</span>
           </label>
           <div className="relative">
             <input

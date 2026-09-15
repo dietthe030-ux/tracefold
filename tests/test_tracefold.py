@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 import json
 from pathlib import Path
 
@@ -306,8 +307,8 @@ def test_07_two_existing_clusters_rejection(direct_vm, direct_deploy):
     direct_vm.clear_mocks()
     mock_sources(
         direct_vm,
-        nvd=json.dumps({"cve": {"id": "CVE-2026-2002", "descriptions": [{"lang": "en", "value": "Bug"}]}}),
-        ghsa=json.dumps({"ghsa_id": "GHSA-2002-3003-4004", "identifiers": [{"type": "GHSA", "value": "GHSA-2002-3003-4004"}]})
+        nvd=json.dumps({"cve": {"id": "CVE-2026-2002", "descriptions": [{"lang": "en", "value": "Bug"}], "references": [{"url": "https://github.com/advisories/GHSA-2002-3003-4004"}]}}),
+        ghsa=json.dumps({"ghsa_id": "GHSA-2002-3003-4004", "cve_id": "CVE-2026-2002", "identifiers": [{"type": "GHSA", "value": "GHSA-2002-3003-4004"}, {"type": "CVE", "value": "CVE-2026-2002"}]})
     )
     mock_llm_same(direct_vm)
     with direct_vm.prank(BOB):
@@ -492,9 +493,8 @@ def test_13_validator_disagreement_prevents_mutation(direct_vm, direct_deploy):
     with direct_vm.prank(ALICE):
         pid = contract.propose_alias_set("nonce-disagree", CVE_ID, "GHSA-9999-8888-7777")
         outcome = contract.assess_proposal(pid)
-        # Because evaluate() enforces that unrelated packages with no cross refs cannot be SAME_VULNERABILITY,
-        # it derived DISTINCT safely
-        assert outcome == "DISTINCT"
+        # Model-only claims cannot authorize a merge without deterministic links.
+        assert outcome == "RELATED_NOT_SAME"
         assert json.loads(contract.get_counts())["cluster_count"] == 0
 
 
@@ -667,4 +667,95 @@ def test_21_objection_blocks_cluster_mutation(direct_vm, direct_deploy):
     assert proposal["status"] == "UNRESOLVED"
     assert status["objection_status"] == "ACTIVE"
     assert history["items"][0]["objection_guard_applied"] is True
+    final = history["items"][0]
+    expected_fingerprint = hashlib.sha256(json.dumps({
+        "cross_ref": final["cross_reference_band"],
+        "ids": final["canonical_ids"],
+        "outcome": final["outcome"],
+        "pkg_rel": final["package_relation"],
+        "range_rel": final["range_relation"],
+        "revisions": final["source_revisions"],
+        "root_cause": final["root_cause_band"],
+    }, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+    assert final["fingerprint"] == expected_fingerprint
+    assert proposal["latest_assessment"]["fingerprint"] == expected_fingerprint
+    assert json.loads(contract.get_counts())["cluster_count"] == 0
+
+
+def test_22_model_cannot_strengthen_unrelated_raw_evidence(direct_vm, direct_deploy):
+    contract = deploy_contract(direct_deploy)
+    unrelated_osv = json.dumps({
+        "id": OSV_ID,
+        "modified": "2026-08-22T00:00:00Z",
+        "aliases": [],
+        "affected": [{"package": {"ecosystem": "PyPI", "name": "different-package"}, "ranges": []}],
+        "references": [],
+    })
+    mock_sources(direct_vm, ghsa=DISTINCT_GHSA_BODY, osv=unrelated_osv)
+    mock_llm_same(direct_vm)
+    with direct_vm.prank(ALICE):
+        pid = contract.propose_alias_set("forged-same", CVE_ID, "GHSA-9999-8888-7777", OSV_ID)
+        assert contract.assess_proposal(pid) == "DISTINCT"
+    proposal = json.loads(contract.get_proposal(pid))
+    assert proposal["status"] == "KEPT_SEPARATE"
+    assert proposal["latest_assessment"]["package_relation"] == "UNRELATED"
+    assert proposal["latest_assessment"]["cross_reference_band"] == "NONE"
+    assert json.loads(contract.get_counts())["cluster_count"] == 0
+
+
+def test_23_consumption_history_is_bounded_and_authoritative(direct_vm, direct_deploy):
+    contract = deploy_contract(direct_deploy)
+    mock_sources(direct_vm)
+    mock_llm_same(direct_vm)
+    with direct_vm.prank(ALICE):
+        pid = contract.propose_alias_set("consume-history", CVE_ID, GHSA_ID)
+        contract.assess_proposal(pid)
+    with direct_vm.prank(BOB):
+        contract.consume_incident("ctx-history", CVE_ID)
+    page = json.loads(contract.get_paged_consumptions(0, 20))
+    assert page["total"] == 1
+    assert page["items"] == [{
+        "caller": BOB,
+        "cluster_id": 1,
+        "consumed_at": page["items"][0]["consumed_at"],
+        "context_hash": "ctx-history",
+        "index": 1,
+    }]
+    assert json.loads(contract.get_paged_consumptions(1, 20))["items"] == []
+
+
+def test_24_every_public_objection_reason_matches_contract_abi(direct_vm, direct_deploy):
+    contract = deploy_contract(direct_deploy)
+    reasons = ["DIFFERENT_ROOT_CAUSE", "SEPARATE_RELEASES", "ECOSYSTEM_SPLIT", "VENDOR_DISPUTE", "OTHER"]
+    with direct_vm.prank(ALICE):
+        pid = contract.propose_alias_set("all-reasons", CVE_ID, GHSA_ID)
+    with direct_vm.prank(BOB):
+        for index, reason in enumerate(reasons):
+            assert int(contract.record_objection(pid, reason, f"Evidence note {index}")) == index
+    records = json.loads(contract.get_paged_objections(pid, 0, 20))["items"]
+    assert [record["reason_code"] for record in records] == reasons
+
+
+def test_25_reference_matching_rejects_identifier_substrings(direct_vm, direct_deploy):
+    contract = deploy_contract(direct_deploy)
+    nvd = json.dumps({"cve": {
+        "id": CVE_ID,
+        "lastModified": "2026-08-20T10:00:00Z",
+        "descriptions": [{"lang": "en", "value": "Record"}],
+        "references": [{"url": f"https://example.test/{GHSA_ID}X"}],
+    }})
+    ghsa = json.dumps({
+        "ghsa_id": GHSA_ID,
+        "updated_at": "2026-08-20T10:30:00Z",
+        "identifiers": [{"type": "GHSA", "value": GHSA_ID}],
+        "vulnerabilities": [{"package": {"ecosystem": "npm", "name": "auth-gateway"}, "vulnerable_version_range": "<3.2.0"}],
+        "references": [f"https://example.test/{CVE_ID}0"],
+    })
+    mock_sources(direct_vm, nvd=nvd, ghsa=ghsa)
+    mock_llm_same(direct_vm)
+    with direct_vm.prank(ALICE):
+        pid = contract.propose_alias_set("substring-ref", CVE_ID, GHSA_ID)
+        assert contract.assess_proposal(pid) == "RELATED_NOT_SAME"
+    assessment = json.loads(contract.get_latest_assessment(pid))
+    assert assessment["cross_reference_band"] == "NONE"
     assert json.loads(contract.get_counts())["cluster_count"] == 0

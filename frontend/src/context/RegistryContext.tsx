@@ -41,7 +41,7 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
   const { account, writeProvider, phase: walletPhase } = useWallet();
   const [clusters, setClusters] = useState<ClusterRecord[]>([]);
   const [proposals, setProposals] = useState<ProposalRecord[]>([]);
-  const [consumptions] = useState<ConsumptionRecord[]>([]);
+  const [consumptions, setConsumptions] = useState<ConsumptionRecord[]>([]);
   const [counts, setCounts] = useState<RegistryCounts>({
     proposal_count: 0,
     cluster_count: 0,
@@ -78,16 +78,18 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
   const refreshAll = useCallback(async () => {
     setIsLoading(true);
     try {
-      const [cnts, pList, cList, upg] = await Promise.all([
-        rpcClient.getCounts(),
+      const cnts = await rpcClient.getCounts();
+      const [pList, cList, consumptionList, upg] = await Promise.all([
         rpcClient.getProposals(0, 20),
         rpcClient.getClusters(0, 20),
+        rpcClient.getConsumptions(Math.max(0, cnts.consumption_count - 20), 20),
         rpcClient.getUpgrader(),
       ]);
 
       setCounts(cnts);
       setProposals(pList);
       setClusters(cList);
+      setConsumptions(consumptionList);
       setUpgraderAddress(upg);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error loading registry state';
@@ -271,6 +273,10 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
     note: string
   ): Promise<ObjectionRecord[] | null> => {
     beginOperation('recordObjection');
+    let beforeProposal: ProposalRecord | null;
+    try { beforeProposal = await rpcClient.getProposal(proposalId); }
+    catch (error) { activeOperationRef.current = false; throw error; }
+    if (!beforeProposal) { activeOperationRef.current = false; throw new Error('Proposal state is unavailable before objection signing.'); }
 
     const opId = `op_obj_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const intent: PendingOperation['intent'] = {
@@ -279,6 +285,7 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
       caller: account!,
       timestamp: Date.now(),
       description: `File objection [${code}] on Proposal #${proposalId}`,
+      before: { objectionCount: beforeProposal.objection_count },
     };
 
     PendingTxStore.saveIntent({
@@ -341,6 +348,11 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const assessProposal = async (proposalId: number): Promise<string> => {
     beginOperation('assessProposal');
+    let beforeProposal: ProposalRecord | null;
+    let beforeHistory;
+    try { [beforeProposal, beforeHistory] = await Promise.all([rpcClient.getProposal(proposalId), rpcClient.getAssessmentHistory(proposalId)]); }
+    catch (error) { activeOperationRef.current = false; throw error; }
+    if (!beforeProposal) { activeOperationRef.current = false; throw new Error('Proposal state is unavailable before assessment signing.'); }
 
     const opId = `op_assess_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const intent: PendingOperation['intent'] = {
@@ -349,6 +361,7 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
       caller: account!,
       timestamp: Date.now(),
       description: `Consensus adjudication for Proposal #${proposalId}`,
+      before: { attempts: beforeProposal.attempts, historyTotal: beforeHistory.length, lastAssessedAt: beforeProposal.last_assessed_at, fingerprint: beforeProposal.latest_assessment?.fingerprint },
     };
 
     PendingTxStore.saveIntent({
@@ -409,6 +422,11 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const retryUnresolved = async (proposalId: number): Promise<string> => {
     beginOperation('retryUnresolved');
+    let beforeProposal: ProposalRecord | null;
+    let beforeHistory;
+    try { [beforeProposal, beforeHistory] = await Promise.all([rpcClient.getProposal(proposalId), rpcClient.getAssessmentHistory(proposalId)]); }
+    catch (error) { activeOperationRef.current = false; throw error; }
+    if (!beforeProposal) { activeOperationRef.current = false; throw new Error('Proposal state is unavailable before retry signing.'); }
 
     const opId = `op_retry_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const intent: PendingOperation['intent'] = {
@@ -417,6 +435,7 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
       caller: account!,
       timestamp: Date.now(),
       description: `Retry assessment on UNRESOLVED Proposal #${proposalId}`,
+      before: { attempts: beforeProposal.attempts, historyTotal: beforeHistory.length, lastAssessedAt: beforeProposal.last_assessed_at, fingerprint: beforeProposal.latest_assessment?.fingerprint },
     };
 
     PendingTxStore.saveIntent({
@@ -480,6 +499,9 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
     clusterOrAliasId: string
   ): Promise<boolean> => {
     beginOperation('consumeIncident');
+    let beforeCounts: RegistryCounts;
+    try { beforeCounts = await rpcClient.getCounts(); }
+    catch (error) { activeOperationRef.current = false; throw error; }
 
     const opId = `op_consume_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const intent: PendingOperation['intent'] = {
@@ -488,6 +510,7 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
       caller: account!,
       timestamp: Date.now(),
       description: `Exact-once consumption for context ${contextHash} on ${clusterOrAliasId}`,
+      before: { consumptionCount: beforeCounts.consumption_count },
     };
 
     PendingTxStore.saveIntent({

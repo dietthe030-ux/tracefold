@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-15T16:18:51.467Z",
+  "checkedAt": "2026-09-15T16:55:37.149Z",
   "network": "studio-dev",
   "chainId": 61997,
   "rpc": "https://studio-dev.genlayer.com/api",
@@ -102,6 +102,21 @@
         "ret": "string"
       },
       "get_paged_clusters": {
+        "params": [
+          [
+            "offset",
+            "int"
+          ],
+          [
+            "limit",
+            "int"
+          ]
+        ],
+        "kwparams": {},
+        "readonly": true,
+        "ret": "string"
+      },
+      "get_paged_consumptions": {
         "params": [
           [
             "offset",

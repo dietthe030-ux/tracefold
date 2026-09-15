@@ -116,6 +116,69 @@ describe('GenLayerRpcClient Service & Invariants', () => {
     expect(readContractSpy).toHaveBeenNthCalledWith(2, expect.objectContaining({ functionName: 'get_assessment_history', args: [1, 0, 3] }));
   });
 
+  it('uses the bounded authoritative consumption-history ABI', async () => {
+    const readContractSpy = vi.spyOn((client as any).client, 'readContract')
+      .mockResolvedValue(JSON.stringify({ items: [{ index: 1, caller: '0x1111111111111111111111111111111111111111', context_hash: 'ctx', cluster_id: 1, consumed_at: 'now' }] }));
+    const rows = await client.getConsumptions(0, 99);
+    expect(rows).toHaveLength(1);
+    expect(readContractSpy).toHaveBeenCalledWith(expect.objectContaining({ functionName: 'get_paged_consumptions', args: [0, 20] }));
+  });
+
+  it('rejects an objection readback that only observes an older record', async () => {
+    const hash = '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+    vi.spyOn((client as any).client, 'waitForFinalization').mockResolvedValue({ statusName: 'FINALIZED', txExecutionResultName: 'FINISHED_WITH_RETURN' });
+    vi.spyOn(client, 'getObjections').mockResolvedValue([{ proposal_id: 1, index: 0, objector: '0x1111111111111111111111111111111111111111', reason_code: 'OTHER', note: 'old', created_at: 'now' }]);
+    await expect(client.waitForFinalityAndReadback(hash, {
+      method: 'record_objection', args: [1, 'DIFFERENT_ROOT_CAUSE', 'new evidence'], caller: '0x1111111111111111111111111111111111111111', before: { objectionCount: 1 },
+    })).rejects.toThrow('Authoritative readback did not verify');
+  });
+
+  it('rejects an unchanged UNRESOLVED retry readback', async () => {
+    const hash = '0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb';
+    const assessment = { outcome: 'UNRESOLVED', fingerprint: 'same', history_index: 0 } as any;
+    vi.spyOn((client as any).client, 'waitForFinalization').mockResolvedValue({ statusName: 'FINALIZED', txExecutionResultName: 'FINISHED_WITH_RETURN' });
+    vi.spyOn(client, 'getProposal').mockResolvedValue({ proposal_id: 1, status: 'UNRESOLVED', attempts: 1, last_assessed_at: 'old', latest_assessment: assessment } as any);
+    vi.spyOn(client, 'getAssessmentHistory').mockResolvedValue([assessment]);
+    await expect(client.waitForFinalityAndReadback(hash, {
+      method: 'retry_unresolved', args: [1], caller: '0x1111111111111111111111111111111111111111', before: { attempts: 1, historyTotal: 1, lastAssessedAt: 'old', fingerprint: 'same' },
+    })).rejects.toThrow('Authoritative readback did not verify');
+  });
+
+  it('accepts exactly one new objection matching the signed intent', async () => {
+    const hash = '0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc';
+    const caller = '0x1111111111111111111111111111111111111111';
+    vi.spyOn((client as any).client, 'waitForFinalization').mockResolvedValue({ statusName: 'FINALIZED', txExecutionResultName: 'FINISHED_WITH_RETURN' });
+    vi.spyOn(client, 'getObjections').mockResolvedValue([
+      { proposal_id: 1, index: 0, objector: caller, reason_code: 'OTHER', note: 'old', created_at: 'before' },
+      { proposal_id: 1, index: 1, objector: caller, reason_code: 'DIFFERENT_ROOT_CAUSE', note: 'new evidence', created_at: 'after' },
+    ]);
+    const result = await client.waitForFinalityAndReadback(hash, {
+      method: 'record_objection', args: [1, 'DIFFERENT_ROOT_CAUSE', '  new   evidence  '], caller, before: { objectionCount: 1 },
+    });
+    expect(result.status).toBe('SUCCESS');
+  });
+
+  it('accepts one new assessment history record even when UNRESOLVED repeats', async () => {
+    const hash = '0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd';
+    const oldAssessment = { outcome: 'UNRESOLVED', fingerprint: 'same', history_index: 0 } as any;
+    const newAssessment = { outcome: 'UNRESOLVED', fingerprint: 'same', history_index: 1 } as any;
+    vi.spyOn((client as any).client, 'waitForFinalization').mockResolvedValue({ statusName: 'FINALIZED', txExecutionResultName: 'FINISHED_WITH_RETURN' });
+    vi.spyOn(client, 'getProposal').mockResolvedValue({ proposal_id: 1, status: 'UNRESOLVED', attempts: 2, last_assessed_at: 'new', latest_assessment: newAssessment } as any);
+    vi.spyOn(client, 'getAssessmentHistory').mockResolvedValue([oldAssessment, newAssessment]);
+    const result = await client.waitForFinalityAndReadback(hash, {
+      method: 'retry_unresolved', args: [1], caller: '0x1111111111111111111111111111111111111111', before: { attempts: 1, historyTotal: 1, lastAssessedAt: 'old', fingerprint: 'same' },
+    });
+    expect(result.status).toBe('SUCCESS');
+  });
+
+  it('fails closed when a receipt omits explicit finality status', async () => {
+    const hash = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+    vi.spyOn((client as any).client, 'waitForFinalization').mockResolvedValue({ txExecutionResultName: 'FINISHED_WITH_RETURN' });
+    await expect(client.waitForFinalityAndReadback(hash, {
+      method: 'propose_alias_set', args: ['nonce', 'CVE-2026-1001', '', ''], caller: '0x1111111111111111111111111111111111111111',
+    })).rejects.toThrow('did not reach FINALIZED: UNKNOWN');
+  });
+
   it('handles 429 rate limits with jittered cooldown backoff', async () => {
     let attempts = 0;
     vi.spyOn((client as any).client, 'readContract').mockImplementation(async () => {

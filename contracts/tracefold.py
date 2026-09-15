@@ -54,6 +54,14 @@ def _to_text(body: Any) -> str:
     return ""
 
 
+def _reference_mentions_identifier(reference: str, identifier: str) -> bool:
+    if not isinstance(reference, str) or not isinstance(identifier, str):
+        return False
+    decoded = urllib.parse.unquote(reference).upper()
+    token = identifier.upper()
+    return re.search(r"(?<![A-Z0-9-])" + re.escape(token) + r"(?![A-Z0-9-])", decoded) is not None
+
+
 def ensure_address(value: Any) -> gl.Address:
     if isinstance(value, gl.Address):
         return value
@@ -133,6 +141,19 @@ def _compute_canonical_display_id(aliases: list[str]) -> str:
     if osvs:
         return osvs[0]
     return ""
+
+
+def _assessment_fingerprint(assessment: dict[str, Any]) -> str:
+    """Hash the final consequence-bearing assessment fields."""
+    return hashlib.sha256(_canonical_json({
+        "ids": assessment.get("canonical_ids", []),
+        "revisions": assessment.get("source_revisions", {}),
+        "outcome": assessment.get("outcome", "UNRESOLVED"),
+        "pkg_rel": assessment.get("package_relation", "UNKNOWN"),
+        "range_rel": assessment.get("range_relation", "UNKNOWN"),
+        "cross_ref": assessment.get("cross_reference_band", "NONE"),
+        "root_cause": assessment.get("root_cause_band", "UNCERTAIN"),
+    }).encode("utf-8")).hexdigest()
 
 
 def _parse_iso_timestamp(ts_str: str) -> int:
@@ -573,7 +594,7 @@ class Tracefold(gl.contract.Contract):
                         explicit_alias_found = True
                 for r in ghsa_p.get("references", []):
                     for ident in all_known_ids:
-                        if ident != ghsa_id_val and ident in r:
+                        if ident != ghsa_id_val and _reference_mentions_identifier(r, ident):
                             ref_link_found = True
 
             # Check OSV aliases & refs
@@ -584,7 +605,7 @@ class Tracefold(gl.contract.Contract):
                         explicit_alias_found = True
                 for r in osv_p.get("references", []):
                     for ident in all_known_ids:
-                        if ident != osv_id_val and ident in r:
+                        if ident != osv_id_val and _reference_mentions_identifier(r, ident):
                             ref_link_found = True
 
             # Check NVD refs
@@ -592,7 +613,7 @@ class Tracefold(gl.contract.Contract):
                 nvd_p = normalized_projections["NVD"]
                 for r in nvd_p.get("references", []):
                     for ident in all_known_ids:
-                        if ident != cve_id_val and ident in r:
+                        if ident != cve_id_val and _reference_mentions_identifier(r, ident):
                             ref_link_found = True
 
             cross_ref_band = "NONE"
@@ -602,25 +623,24 @@ class Tracefold(gl.contract.Contract):
                 cross_ref_band = "REFERENCE_LINK"
 
             # Check package coordinates
-            pkg_names = set()
-            ecosystems = set()
+            package_coordinates = set()
             if "GHSA" in normalized_projections:
                 for p in normalized_projections["GHSA"].get("packages", []):
-                    if p.get("name"):
-                        pkg_names.add(p["name"])
-                    if p.get("ecosystem"):
-                        ecosystems.add(p["ecosystem"])
+                    ecosystem = str(p.get("ecosystem", "")).strip().lower()
+                    name = str(p.get("name", "")).strip().lower()
+                    if ecosystem and name:
+                        package_coordinates.add((ecosystem, name))
             if "OSV" in normalized_projections:
                 for p in normalized_projections["OSV"].get("affected", []):
-                    if p.get("name"):
-                        pkg_names.add(p["name"])
-                    if p.get("ecosystem"):
-                        ecosystems.add(p["ecosystem"])
+                    ecosystem = str(p.get("ecosystem", "")).strip().lower()
+                    name = str(p.get("name", "")).strip().lower()
+                    if ecosystem and name:
+                        package_coordinates.add((ecosystem, name))
 
             package_relation = "UNKNOWN"
-            if len(pkg_names) == 1:
+            if len(package_coordinates) == 1:
                 package_relation = "EXACT_MATCH"
-            elif len(pkg_names) > 1:
+            elif len(package_coordinates) > 1:
                 package_relation = "UNRELATED"
 
             # Determine whether sufficient official records succeeded
@@ -702,12 +722,8 @@ Respond strictly with a JSON object matching this schema:
                 candidate_outcome = llm_result.get("outcome", "UNRESOLVED")
                 if candidate_outcome in VALID_OUTCOMES:
                     outcome = candidate_outcome
-                if llm_result.get("package_relation") in VALID_PACKAGE_RELATIONS:
-                    p_rel = llm_result["package_relation"]
                 if llm_result.get("range_relation") in VALID_RANGE_RELATIONS:
                     r_rel = llm_result["range_relation"]
-                if llm_result.get("cross_reference_band") in VALID_CROSS_REF_BANDS:
-                    c_band = llm_result["cross_reference_band"]
                 if llm_result.get("root_cause_band") in VALID_ROOT_CAUSE_BANDS:
                     rc_band = llm_result["root_cause_band"]
                 if isinstance(llm_result.get("reason"), str):
@@ -717,11 +733,12 @@ Respond strictly with a JSON object matching this schema:
             # Must have:
             # 1. >= 2 successful records
             # 2. No contradictory package coordinate
-            # 3. Explicit alias/ref link OR exact package match + overlapping range / same flaw
+            # 3. A deterministic explicit alias/reference link. Model output may
+            #    explain evidence but can never strengthen this authorization.
             is_same_allowed = (
                 len(successful_sources) >= 2
                 and p_rel != "UNRELATED"
-                and (c_band in {"EXPLICIT_ALIAS", "REFERENCE_LINK"} or (p_rel == "EXACT_MATCH" and rc_band == "SAME_FLAW"))
+                and c_band in {"EXPLICIT_ALIAS", "REFERENCE_LINK"}
             )
 
             if outcome == "SAME_VULNERABILITY" and not is_same_allowed:
@@ -732,17 +749,7 @@ Respond strictly with a JSON object matching this schema:
             if p_rel == "UNRELATED" and c_band == "NONE":
                 outcome = "DISTINCT"
 
-            fingerprint = hashlib.sha256(_canonical_json({
-                "ids": canonical_ids_list,
-                "revisions": source_revisions,
-                "outcome": outcome,
-                "pkg_rel": p_rel,
-                "range_rel": r_rel,
-                "cross_ref": c_band,
-                "root_cause": rc_band,
-            }).encode("utf-8")).hexdigest()
-
-            return {
+            result = {
                 "outcome": outcome,
                 "canonical_ids": canonical_ids_list,
                 "successful_sources": successful_sources,
@@ -753,9 +760,11 @@ Respond strictly with a JSON object matching this schema:
                 "cross_reference_band": c_band,
                 "root_cause_band": rc_band,
                 "target_cluster_id": target_cid_val,
-                "fingerprint": fingerprint,
+                "fingerprint": "",
                 "reason": reason_str,
             }
+            result["fingerprint"] = _assessment_fingerprint(result)
+            return result
 
         def validate(leader_result: Any) -> bool:
             if not isinstance(leader_result, gl.vm.Return):
@@ -834,12 +843,13 @@ Respond strictly with a JSON object matching this schema:
             assessment["reason"] = "Active objections require manual review; no cluster mutation was applied."
             assessment["objection_guard_applied"] = True
 
+        # Persist a fingerprint of the final, policy-guarded consequence.
+        assessment["fingerprint"] = _assessment_fingerprint(assessment)
+
         history_count = int(self.assessment_counts.get(proposal_id, gl.u32(0)))
         if history_count >= MAX_ASSESSMENTS_PER_PROPOSAL:
             raise gl.vm.UserError("Assessment history capacity reached")
         assessment["history_index"] = history_count
-        self.assessment_history[f"{pid}:{history_count}"] = _canonical_json(assessment)
-        self.assessment_counts[proposal_id] = gl.u32(history_count + 1)
 
         prop["attempts"] = int(prop.get("attempts", 0)) + 1
         prop["last_assessed_at"] = now
@@ -900,6 +910,11 @@ Respond strictly with a JSON object matching this schema:
         elif outcome == "UNRESOLVED":
             prop["status"] = "UNRESOLVED"
 
+        # Store history only after every deterministic consequence field,
+        # including the assigned cluster, has reached its final value.
+        self.assessment_history[f"{pid}:{history_count}"] = _canonical_json(assessment)
+        self.assessment_counts[proposal_id] = gl.u32(history_count + 1)
+        prop["latest_assessment"] = assessment
         self.proposals[proposal_id] = _canonical_json(prop)
         return outcome
 
@@ -1050,6 +1065,18 @@ Respond strictly with a JSON object matching this schema:
         return self.consumptions.get(consume_key, False)
 
     @gl.public.view
+    def get_paged_consumptions(self, offset: gl.u32, limit: gl.u32) -> str:
+        off = int(offset)
+        lim = min(max(int(limit), 0), 20)
+        total = int(self.consumption_count)
+        items = []
+        for i in range(off + 1, min(off + lim + 1, total + 1)):
+            raw = self.consumption_records.get(gl.u32(i), "")
+            if raw:
+                items.append(json.loads(raw))
+        return _canonical_json({"total": total, "offset": off, "limit": lim, "items": items})
+
+    @gl.public.view
     def get_paged_proposals(self, offset: gl.u32, limit: gl.u32) -> str:
         off = int(offset)
         lim = min(int(limit), 20)
@@ -1101,5 +1128,3 @@ Respond strictly with a JSON object matching this schema:
         addr = ensure_address(proposer)
         key = f"{str(addr).lower()}:{client_nonce.strip()}"
         return self.proposal_by_nonce.get(key, gl.u32(0))
-
-
