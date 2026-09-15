@@ -5,7 +5,7 @@ Checkpoint candidate for independent `PRE_DEPLOY` review. No Studio write or dep
 ## Exact candidate
 
 - Contract: `contracts/tracefold.py`
-- SHA-256: `C2E3644C37D20D14FE868B23084ACB73DC7E9C7867BB4BB0988BC4CE5219E159`
+- SHA-256: `DE542180BA58FE382F9E55CBD8C7776C989B80766FC87F4882F3CB27FF71552D`
 - Header: GenVM `v0.3.0`
 - Runtime selector used by lint/tests: `v0.6.0-rc5`
 - Dependency: `py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng`
@@ -33,6 +33,8 @@ Frontend callers match the live ABI, including `get_assessment_history(proposal_
 One `run_nondet_default(evaluate, validate)` boundary contains bounded `web.get` acquisition from NVD, GitHub Advisory Database, and OSV plus one bounded JSON LLM classification. The validator independently reruns acquisition/classification and compares every state-authorizing field: outcome, normalized identifiers, successful sources, statuses, revisions, package/range/cross-reference/root-cause bands, target cluster, and fingerprint. Package identity uses the deterministic ecosystem-and-name pair; cross-reference bands come only from exact raw aliases/URLs. LLM output cannot strengthen either field or authorize `SAME_VULNERABILITY` without a deterministic explicit link. Malformed wrappers, missing fields, invalid outcomes, disagreement, unavailable evidence, and invalid reasoning fail closed before mutation.
 
 Captured closure values are primitive in-memory data; no storage proxy crosses the boundary. Direct Mode's serialization checks and deliberate-disagreement regression pass.
+
+Every assessment branch, including unavailable/insufficient evidence, constructs its complete final result before calling the same canonical fingerprint helper. Tests independently reproduce that early `UNRESOLVED` hash and match it across latest state and bounded history.
 
 ## Known compatibility deviation
 

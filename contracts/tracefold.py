@@ -649,13 +649,7 @@ class Tracefold(gl.contract.Contract):
 
             if len(successful_sources) < min_required_records or has_unavailable_sources:
                 # Ambiguous or unavailable evidence safely resolves to UNRESOLVED
-                fingerprint = hashlib.sha256(_canonical_json({
-                    "ids": canonical_ids_list,
-                    "revisions": source_revisions,
-                    "outcome": "UNRESOLVED",
-                }).encode("utf-8")).hexdigest()
-
-                return {
+                result = {
                     "outcome": "UNRESOLVED",
                     "canonical_ids": canonical_ids_list,
                     "successful_sources": successful_sources,
@@ -666,9 +660,11 @@ class Tracefold(gl.contract.Contract):
                     "cross_reference_band": cross_ref_band,
                     "root_cause_band": "UNCERTAIN",
                     "target_cluster_id": target_cid_val,
-                    "fingerprint": fingerprint,
+                    "fingerprint": "",
                     "reason": "Official evidence sources were unavailable or returned insufficient records for consensus.",
                 }
+                result["fingerprint"] = _assessment_fingerprint(result)
+                return result
 
             # Prepare structured prompt for LLM Semantic Judgment
             prompt = f"""You are a vulnerability alias consensus judge.

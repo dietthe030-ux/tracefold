@@ -45,7 +45,7 @@
     "checked": true,
     "projectSdk": "genlayer-js 2.0.0-rc.1",
     "runtime": "GenVM v0.3.0; GenVM Manager v0.6.0-rc5; py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng",
-    "schema": "live getContractSchemaForCode PASS with 20 intended methods on exact source SHA256 C2E3644C37D20D14FE868B23084ACB73DC7E9C7867BB4BB0988BC4CE5219E159",
+    "schema": "live getContractSchemaForCode PASS with 20 intended methods on exact source SHA256 DE542180BA58FE382F9E55CBD8C7776C989B80766FC87F4882F3CB27FF71552D",
     "wrapperSelfTest": "PASS: command guards, duplicate reservation and prompt handshake; no transactions"
   }
 }

@@ -378,7 +378,18 @@ def test_10_unavailable_source_unresolved_and_retry(direct_vm, direct_deploy):
     assert prop["attempts"] == 1
     history = json.loads(contract.get_assessment_history(pid, 0, 10))
     assert history["total"] == 1
-    assert history["items"][0]["fingerprint"] == prop["latest_assessment"]["fingerprint"]
+    early = history["items"][0]
+    expected_early_fingerprint = hashlib.sha256(json.dumps({
+        "cross_ref": early["cross_reference_band"],
+        "ids": early["canonical_ids"],
+        "outcome": early["outcome"],
+        "pkg_rel": early["package_relation"],
+        "range_rel": early["range_relation"],
+        "revisions": early["source_revisions"],
+        "root_cause": early["root_cause_band"],
+    }, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+    assert early["fingerprint"] == expected_early_fingerprint
+    assert prop["latest_assessment"]["fingerprint"] == expected_early_fingerprint
 
     # Attempting assess_proposal again directly fails (must use retry_unresolved)
     with direct_vm.prank(BOB):

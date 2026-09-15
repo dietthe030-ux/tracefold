@@ -16,4 +16,4 @@ dist/assets/genlayer-txhOXoFR.js  613.66 kB │ gzip: 132.50 kB
 - Using dynamic import() to code-split the application
 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
-✓ built in 3.66s
+✓ built in 3.31s

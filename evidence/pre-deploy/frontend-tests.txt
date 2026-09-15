@@ -3,19 +3,19 @@ npm notice run vitest run --run
 
  RUN  v3.2.7 E:/Genlayer-Projects/tracefold/frontend
 
- ✓ src/__tests__/pendingTxStore.test.ts (4 tests) 6ms
- ✓ src/__tests__/storageProbe.test.ts (3 tests) 6ms
  ✓ src/__tests__/validation.test.ts (15 tests) 9ms
+ ✓ src/__tests__/storageProbe.test.ts (3 tests) 6ms
+ ✓ src/__tests__/pendingTxStore.test.ts (4 tests) 6ms
  ✓ src/__tests__/walletState.test.ts (3 tests) 6ms
- ✓ src/__tests__/writeFees.test.ts (2 tests) 11ms
+ ✓ src/__tests__/writeFees.test.ts (2 tests) 10ms
  ✓ src/__tests__/eip6963.test.ts (15 tests) 89ms
- ✓ src/__tests__/rpcClient.test.ts (14 tests) 39ms
- ✓ src/__tests__/transactionProgress.test.tsx (10 tests) 80ms
- ✓ src/__tests__/walletModal.test.tsx (5 tests) 98ms
- ✓ src/__tests__/components.test.tsx (6 tests) 281ms
+ ✓ src/__tests__/rpcClient.test.ts (14 tests) 37ms
+ ✓ src/__tests__/transactionProgress.test.tsx (10 tests) 64ms
+ ✓ src/__tests__/walletModal.test.tsx (5 tests) 77ms
+ ✓ src/__tests__/components.test.tsx (6 tests) 273ms
 
  Test Files  10 passed (10)
       Tests  77 passed (77)
-   Start at  23:57:31
-   Duration  2.76s (transform 576ms, setup 1.07s, collect 3.92s, tests 624ms, environment 6.40s, prepare 2.91s)
+   Start at  00:07:25
+   Duration  2.67s (transform 627ms, setup 1.07s, collect 3.71s, tests 575ms, environment 6.63s, prepare 3.12s)
 
