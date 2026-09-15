@@ -1,0 +1,16 @@
+{
+  "purpose": "Read-only corroboration of documented datetime.now transaction clock; not R13 release evidence",
+  "address": "0x5E2899A296378a42d2F5542507cac3094bD8b84E",
+  "transactionHash": "0x76c5418e15e91a5ac43ff98e8de2ba346dc8afe52390ad9db41ad02a37127914",
+  "status": "FINALIZED",
+  "execution": "FINISHED_WITH_RETURN",
+  "consensus": "MAJORITY_AGREE",
+  "sender": "0x9Ec6a971FF91c7540cCe6432E7abf7eCE005d5a5",
+  "receiptTimestamp": "2026-09-15T18:43:43.685100+00:00",
+  "proposalId": 6,
+  "storedCreatedAt": "2026-09-15T18:41:25.597026Z",
+  "storedLastAssessedAt": "2026-09-15T18:43:43.685100Z",
+  "timestampsEquivalent": true,
+  "deployedSourceBytes": 50471,
+  "deployedSourceSha256": "C0ECFC464BC9DBAAAFC8A371B8B7E9218FE4696339F6F7754B6FBCA886542CF0"
+}
