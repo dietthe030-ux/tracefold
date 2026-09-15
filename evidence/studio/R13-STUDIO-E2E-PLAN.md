@@ -1,6 +1,6 @@
 # Tracefold R13 Studio E2E matrix
 
-Status: PRE_DEPLOY draft. Artifact revision is `dd96d6eea0faaf36ea8e1c269d5bc57aeeeed863`. Candidate contract source is 50,472 bytes with SHA-256 `85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1`. Target: `studio-dev`, chain 61997, RPC `https://studio-dev.genlayer.com/api`. Deployer, upgrader and test actor: `actor19`, public address `0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`.
+Status: PRE_DEPLOY draft. Source-fix revision is `dd96d6eea0faaf36ea8e1c269d5bc57aeeeed863`; complete technical/evidence revision is `a80235331be6d690f9a863eddb01696eea0659e2`. Candidate contract source is 50,472 bytes with SHA-256 `85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1`. Target: `studio-dev`, chain 61997, RPC `https://studio-dev.genlayer.com/api`. Deployer, upgrader and test actor: `actor19`, public address `0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`.
 
 Addresses `0xD99Bf40623A7554256F18168C64B482777f10237`, `0x5E2899A296378a42d2F5542507cac3094bD8b84E`, `0x4939F578D1d49F6fD01aFfEC997e11E8d256C61c`, `0x769f408F69fc2ef93f5D59853aba14FF4ef1226e` and `0xc9522C696a482CdCe5A12A684a814eeb575CbE3a` are retired. No further writes are authorized against them. Every `tf3-*` and `tf4-*` operation is retired. R13 uses only the fresh `tf5-*` IDs below.
 
@@ -8,7 +8,7 @@ The exact GenLayerJS 2.0.0-rc.1 route is used where an empty positional string i
 
 | Case | Operation and exact call | Required proof |
 |---|---|---|
-| T00 | `tf5-deploy-e20cb3b`; deploy exact source with constructor `0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5` | Fresh address; exact source parity; upgrader actor19; counts 0/0/0. |
+| T00 | `tf5-deploy-85f6bdc`; deploy exact source with constructor `0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5` | Fresh address; exact source parity; upgrader actor19; counts 0/0/0. |
 | T01 | `tf5-t01-propose-alias`; `propose_alias_set("tf5-alias","CVE-2024-26130","","PYSEC-2024-225")` | Proposal 1 PROPOSED; exact IDs/nonce; `created_at` equals the transaction timestamp. |
 | T02 | `tf5-t02-assess-alias`; `assess_proposal(1)` | NVD/OSV 200; SAME_VULNERABILITY; MERGED into cluster 1; authoritative timestamps and reproducible fingerprint. |
 | T03P | `tf5-t03p-propose-cluster2`; `propose_alias_set("tf5-cluster2","CVE-2023-41335","","PYSEC-2023-185")` | Proposal 2 PROPOSED with exact IDs. |
@@ -27,6 +27,7 @@ The exact GenLayerJS 2.0.0-rc.1 route is used where an empty positional string i
 | T15 | `tf5-t15-duplicate-consume`; fee simulation of the same consume call | Exact duplicate error; no broadcast; receipt and counts unchanged. |
 
 Dependent cases execute sequentially. T12-T15 may run while waiting for T11 cooldown. Exact local GHSA multi-package coverage and historical R02 remain scoped corroboration only. Any source, constructor, actor or network change invalidates this matrix.
+
 
 
 
