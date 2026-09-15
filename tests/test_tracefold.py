@@ -107,10 +107,12 @@ def test_missing_transaction_datetime_fails_closed(monkeypatch, direct_deploy):
     contract = deploy_contract(direct_deploy)
     instance = object.__getattribute__(contract, "_instance")
     contract_module = sys.modules[type(instance).__module__]
-    def unavailable():
-        raise RuntimeError("timestamp unavailable")
+    class UnavailableDatetime:
+        @classmethod
+        def now(cls, tz=None):
+            raise RuntimeError("timestamp unavailable")
 
-    monkeypatch.setattr(contract_module.gl.vm, "get_timestamp", unavailable)
+    monkeypatch.setattr(contract_module.datetime, "datetime", UnavailableDatetime)
 
     with pytest.raises(Exception) as exc:
         contract_module._get_current_datetime()

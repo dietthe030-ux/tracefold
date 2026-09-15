@@ -168,12 +168,10 @@ def _parse_iso_timestamp(ts_str: str) -> int:
 
 def _get_current_datetime() -> str:
     try:
-        value = gl.vm.get_timestamp()
+        value = datetime.datetime.now(datetime.timezone.utc)
+        return value.astimezone(datetime.timezone.utc).isoformat()
     except Exception as exc:
         raise gl.vm.UserError("Authoritative transaction datetime is unavailable") from exc
-    if not isinstance(value, datetime.datetime):
-        raise gl.vm.UserError("Authoritative transaction datetime is invalid")
-    return value.astimezone(datetime.timezone.utc).isoformat()
 
 
 class Tracefold(gl.contract.Contract):
