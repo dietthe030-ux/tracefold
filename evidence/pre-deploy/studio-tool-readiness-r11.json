@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-15T19:18:40.1202212+00:00",
+  "endpoint": "https://studio-dev.genlayer.com/api",
+  "chainId": 61997,
+  "network": "studio-dev",
+  "writesSubmitted": 0,
+  "sourceSha256": "2ED3F93EF341BB98CDD288522D1868AE5DC27EFAB633639552E3D1DA7395377F",
+  "tools": [
+    {
+      "name": "GenLayer CLI",
+      "kind": "OFFICIAL_CLI",
+      "official": true,
+      "exactVersion": "0.40.0-rc.3",
+      "capabilities": [
+        "deploy",
+        "write",
+        "call",
+        "receipt",
+        "trace",
+        "fees",
+        "readback"
+      ],
+      "identity": "E:\\Genlayer-Tools\\studio-next-toolchain\\node_modules\\genlayer; wrapper SHA256 E3A51B5F0ADC307F2AB55A052107A2771B5B84AC7BC65E82C26E9A65F5965113; runner SHA256 B38C3CBBC97A7FD86E81A2F1A9C3ABE6F894BC0330784B056A3830D2D9C9AE57",
+      "processBacked": false
+    },
+    {
+      "name": "GenLayer Testing Suite / genvm-lint",
+      "kind": "OFFICIAL_TESTING_SUITE",
+      "official": true,
+      "exactVersion": "genvm-lint 0.11.1rc2 with GenVM Manager v0.6.0-rc5",
+      "capabilities": [
+        "integration-test"
+      ],
+      "identity": "E:\\Genlayer-Tools\\studio-next-toolchain\\.venv; GENVM_VERSION=v0.6.0-rc5",
+      "processBacked": false
+    },
+    {
+      "name": "GenLayerJS",
+      "kind": "OFFICIAL_SDK",
+      "official": true,
+      "exactVersion": "2.0.0-rc.1",
+      "capabilities": [
+        "call",
+        "receipt",
+        "fees",
+        "readback"
+      ],
+      "identity": "E:\\Genlayer-Tools\\studio-next-toolchain\\node_modules\\genlayer-js; toolchain lock SHA256 4EAC87B354C3BF6B1DA3CB61C0D922FF53C63689E9BB358E1519316698BF0B97",
+      "processBacked": false
+    }
+  ],
+  "actors": [
+    {
+      "actor": "actor19",
+      "address": "0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5",
+      "balanceWei": "109998645130999986071"
+    }
+  ],
+  "compatibility": {
+    "checked": true,
+    "projectSdk": "genlayer-js 2.0.0-rc.1",
+    "runtime": "GenVM v0.3.0; GenVM Manager v0.6.0-rc5; py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng",
+    "schema": "Fresh read-only schema PASS: 50674-byte source, constructor plus 20 methods",
+    "networkInfo": "studio-dev / chain 61997 / canonical RPC verified",
+    "feeEstimate": "Official CLI estimate returns 100000000000010352 wei. gltest --fee-profile produced no consumed-fee observations on DirectVM; no fake measured deployment entry is used. Live branch estimates and finalized consumed/refund data are retained.",
+    "wrapperSelfTest": "Previously PASS; operation journal and duplicate reservation retained"
+  }
+}
