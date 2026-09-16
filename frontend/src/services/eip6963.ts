@@ -22,6 +22,29 @@ type InjectedWindow = Window & {
   rabby?: LegacyInjectedProvider;
 };
 
+function canonicalProviderRdns(detail: EIP6963ProviderDetail): string {
+  const provider = detail.provider as LegacyInjectedProvider;
+  // Some multi-wallet injectors announce a compatibility entry as io.metamask.
+  // Prefer the provider's wallet-specific marker so a MetaMask-labelled option
+  // can never dispatch a request to OKX or Rabby.
+  if (provider.isRabby) return SUPPORTED_RDNS.RABBY;
+  if (provider.isOkxWallet) return SUPPORTED_RDNS.OKX;
+  return detail.info.rdns;
+}
+
+function canonicalizeProvider(detail: EIP6963ProviderDetail): EIP6963ProviderDetail {
+  const rdns = canonicalProviderRdns(detail);
+  if (rdns === detail.info.rdns) return detail;
+  return {
+    ...detail,
+    info: {
+      ...detail.info,
+      rdns,
+      name: rdns === SUPPORTED_RDNS.OKX ? 'OKX Wallet' : rdns === SUPPORTED_RDNS.RABBY ? 'Rabby Wallet' : 'MetaMask',
+    },
+  };
+}
+
 export class EIP6963DiscoveryService {
   private providers = new Map<string, EIP6963ProviderDetail>();
   private listeners = new Set<(providers: EIP6963ProviderDetail[]) => void>();
@@ -38,7 +61,7 @@ export class EIP6963DiscoveryService {
       const announceEvent = event as EIP6963AnnounceProviderEvent;
       if (!announceEvent.detail || !announceEvent.detail.info) return;
 
-      const detail = announceEvent.detail;
+      const detail = canonicalizeProvider(announceEvent.detail);
       const { rdns, uuid } = detail.info;
 
       // Filter for strictly supported RDNS only

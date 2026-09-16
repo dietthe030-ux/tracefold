@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useWallet } from '../context/WalletContext';
 import { EIP6963ProviderDetail, SUPPORTED_RDNS } from '../types';
 import { X, ShieldCheck, ExternalLink, AlertTriangle } from 'lucide-react';
@@ -35,6 +35,7 @@ const WalletIcon: React.FC<{ provider: EIP6963ProviderDetail }> = ({ provider })
 export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => {
   const { discoveredProviders, connect, isConnecting, error } = useWallet();
   const modalRef = useRef<HTMLDivElement>(null);
+  const [connectingProviderUuid, setConnectingProviderUuid] = useState<string | null>(null);
 
   // Focus trap and Escape key listener
   useEffect(() => {
@@ -74,11 +75,14 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
   };
 
   const handleConnect = async (provider: (typeof discoveredProviders)[0]) => {
+    setConnectingProviderUuid(provider.info.uuid);
     try {
       await connect(provider);
       onClose();
     } catch {
       // Error handled in context
+    } finally {
+      setConnectingProviderUuid(null);
     }
   };
 
@@ -173,7 +177,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
                   </div>
                 </div>
                 <span className="text-xs bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded border border-blue-500/20 font-medium">
-                  {isConnecting ? 'Connecting...' : 'Connect'}
+                  {isConnecting && connectingProviderUuid === prov.info.uuid ? 'Connecting...' : 'Connect'}
                 </span>
               </button>
             ))

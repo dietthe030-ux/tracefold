@@ -126,6 +126,20 @@ describe('EIP-6963 3-Wallet Discovery & Gate Service', () => {
     expect(service.getProviders()).toHaveLength(1);
   });
 
+  it('does not expose an OKX provider under a MetaMask compatibility announcement', () => {
+    const service = new EIP6963DiscoveryService();
+    service.init();
+    const okxProvider = { request: vi.fn(), isMetaMask: true, isOkxWallet: true };
+    window.dispatchEvent(new CustomEvent('eip6963:announceProvider', {
+      detail: {
+        info: { uuid: 'okx-compat', name: 'MetaMask', icon: '', rdns: SUPPORTED_RDNS.METAMASK },
+        provider: okxProvider,
+      },
+    }));
+    expect(service.getProviders()).toHaveLength(1);
+    expect(service.getProviders()[0].info.rdns).toBe(SUPPORTED_RDNS.OKX);
+  });
+
   it('notifies subscribers upon provider announcement', () => {
     service.init();
     let notifications = 0;
