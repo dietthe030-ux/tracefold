@@ -2,7 +2,7 @@
 
 Tracefold is a GenLayer application that reconciles CVE, GHSA, and OSV identifiers into conservative, evidence-backed vulnerability clusters.
 
-- **Live app:** added after the matching Vercel release is deployed
+- **Live app:** <https://tracefold-gamma.vercel.app>
 - **Contract:** [`0x8A9c3Ae6521a1d452253F640a615937c6cf9d00D`](https://explorer-studio-dev.genlayer.com/address/0x8A9c3Ae6521a1d452253F640a615937c6cf9d00D)
 - **Network:** Studio Dev, chain `61997`
 - **Source SHA-256:** `85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1`
@@ -76,7 +76,7 @@ npm run typecheck
 npm run build
 ```
 
-Current release results: DirectVM `29/29`, frontend `77/77`, TypeScript PASS, production build PASS, and `genvm-lint 0.11.1rc2` lint/validation/schema PASS with 20 public methods. The Studio matrix covers merge, conflict, objection guard, unavailable sources, cooldown rejection and recovery, distinct records, alias resolution, exact-once consumption, rollback, and source parity.
+Current release results: DirectVM `29/29`, frontend `81/81`, TypeScript PASS, production build PASS, and `genvm-lint 0.11.1rc2` lint/validation/schema PASS with 20 public methods. The Studio matrix covers merge, conflict, objection guard, unavailable sources, cooldown rejection and recovery, distinct records, alias resolution, exact-once consumption, rollback, and source parity. Production browser-wallet E2E completed one transaction with FINALIZED lifecycle, semantic and consensus success, and authoritative proposal readback.
 
 See [Verification](docs/VERIFICATION.md) for exact deployment and evidence bindings.
 
@@ -99,4 +99,4 @@ The contract was freshly deployed on Studio Dev from 50,472 source bytes. `gen_g
 - Public source availability and rate limits can cause a conservative `UNRESOLVED` result.
 - Assessment history is intentionally capped at three snapshots per proposal.
 - Tracefold does not automatically merge two existing clusters; it records a conflict for review.
-- The production Vercel URL and browser-wallet E2E evidence are added only after the exact release is deployed and tested.
+- Initial Studio Dev registry synchronization may take approximately 15–20 seconds before authoritative counts render.

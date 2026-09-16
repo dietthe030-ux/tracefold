@@ -10,7 +10,9 @@
 - Explorer: <https://explorer-studio-dev.genlayer.com/address/0x8A9c3Ae6521a1d452253F640a615937c6cf9d00D>
 - Network/RPC: Studio Dev, chain `61997`, `https://studio-dev.genlayer.com/api`
 - Constructor: `upgrader_address=0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`
-- Live app: pending the matching Vercel release
+- Frontend release commit: `f757ef5e41c49629946a2966a26fae14ddf40459`
+- Live app: <https://tracefold-gamma.vercel.app>
+- Vercel deployment: `dpl_929cdbsVPiT8aDGfQwkvJjoMfcAV`
 
 The deployment reached `FINALIZED`, `FINISHED_WITH_RETURN`, and `MAJORITY_AGREE`. `gen_getContractCode` returned 50,472 bytes byte-identical to the committed contract source.
 
@@ -20,7 +22,7 @@ The deployment reached `FINALIZED`, `FINISHED_WITH_RETURN`, and `MAJORITY_AGREE`
 |---|---|---|
 | Contract behavior | `python -m pytest -q` with the project GenLayer test environment | 29/29 PASS |
 | Contract lint/schema | `genvm-lint contracts/tracefold.py` | PASS; 20 methods, 14 view, 6 write |
-| Frontend | `npm test` | 77/77 PASS |
+| Frontend | `npm test` | 81/81 PASS |
 | TypeScript | `npm run typecheck` | PASS |
 | Production bundle | `npm run build` | PASS |
 
@@ -40,8 +42,12 @@ The R13 matrix starts with 0 proposals, 0 clusters, and 0 consumptions and finis
 
 The complete case/result index is [`R13-STUDIO-E2E-LEDGER.md`](../evidence/studio/R13-STUDIO-E2E-LEDGER.md). Recovery and upgrade bindings are in [`R13-DEPLOYMENT-RECOVERY-MANIFEST.md`](../evidence/studio/R13-DEPLOYMENT-RECOVERY-MANIFEST.md).
 
+## Production browser-wallet proof
+
+The production journey connected the selected OKX Wallet provider and submitted one proposal transaction: `0x7ac8627b06381fd029d995f8f63c04a38fa7a127a7137a70f07770413bfa5073`. It reached `FINALIZED`, `FINISHED_WITH_RETURN`, and `MAJORITY_AGREE`. Nonce `vercel-r13-a11771f` resolves authoritatively to proposal `7`, with the exact two submitted identifiers; counts are 7 proposals, 2 clusters, and 1 consumption. Reload recovery broadcast no second transaction. The exact result is [`R13-VERCEL-E2E-RESULT.md`](../evidence/vercel/R13-VERCEL-E2E-RESULT.md).
+
 ## Known limitations
 
 - Studio Dev may reset; the recorded address is not a permanent mainnet deployment.
 - Public source outages and ambiguity deliberately resolve to `UNRESOLVED`.
-- Browser-wallet production evidence remains pending until the exact Vercel deployment is available.
+- Initial Studio Dev registry synchronization may take approximately 15–20 seconds before authoritative counts render.

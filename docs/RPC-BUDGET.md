@@ -35,12 +35,19 @@ For a read-only frontend, record transaction count `0`; do not invent write requ
 
 ## FRONTEND RPC BUDGET EVIDENCE
 
-FRONTEND_EVIDENCE_STATUS: INCOMPLETE
+FRONTEND_EVIDENCE_STATUS: COMPLETE — production browser-wallet run bound to `f757ef5e41c49629946a2966a26fae14ddf40459`
 
 Measure the exact deployed critical journeys before the applicable checkpoint and release.
 
 | Screen/workflow | Request source/method | Actual requests | Cache hit/miss | In-flight dedupe | Poll attempts | Retry/delay | Invalidations | Readback calls | Actual transactions | Variance/result |
 |---|---|---:|---|---|---:|---|---|---:|---:|---|
+| Layer 1 live summary | `get_counts` | 1 | miss | no duplicate observed | 0 | none | none | 1 | 0 | PASS; 7/2/1 rendered |
+| Workspace initial lists | five planned contract reads | 5 | initial misses | one rendered batch | 0 | none | none | 5 | 0 | PASS; authoritative lists rendered after Studio Dev synchronization |
+| Cluster/alias lookup | `resolve_alias` | 1 | miss | no duplicate observed | 0 | none | none | 1 | 0 | PASS; `CVE-2024-26130 → 1` |
+| Wallet connect/sync | `eth_requestAccounts`, `eth_chainId` | 2 | not cached | one connect lock | 0 | none | account/chain binding | 0 | 0 | PASS; already on chain 61997, so no switch/add calls |
+| Proposal write | account, fee, balance, write, finality, nonce/proposal readback, refresh | 15 | consequential calls uncached | one operation/hash lock | 4 observed intervals | five-second bounded observation; no retry | read cache cleared before write/readback and refresh | 7 including five refresh reads | 1 | PASS; same hash reached terminal success; zero resubmissions |
+| Reload/recovery | five initial state reads plus retained receipt/nonce verification | 7 | initial misses | one state batch | 0 additional transaction polls | none | route reload | 7 | 0 | PASS; proposal 7 and the original hash/readback reconciled; no broadcast |
+| Invalid incident submission | account plus fee simulation | 2 | uncached | one operation lock | 0 | none | write cache cleared; counts unchanged | 0 | 0 | PASS; rejected before broadcast, no hash and no wallet prompt |
 
 ## Closure
 
@@ -50,4 +57,4 @@ Measure the exact deployed critical journeys before the applicable checkpoint an
 - A 429 opens one jittered 3–5 second cooldown for later requests; the failed read is surfaced and is not retried automatically.
 - A returned transaction hash is reconciled; no automatic or duplicate resubmission occurs.
 - Mandatory finality, semantic execution and authoritative readback remain intact.
-- Anonymous reviewer checked every applicable matrix/evidence section for the exact package.
+- Exact production evidence: [`../evidence/vercel/R13-VERCEL-E2E-RESULT.md`](../evidence/vercel/R13-VERCEL-E2E-RESULT.md).

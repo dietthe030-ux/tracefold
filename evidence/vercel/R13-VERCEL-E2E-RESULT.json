@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "release": {
+    "frontend_commit": "f757ef5e41c49629946a2966a26fae14ddf40459",
+    "production_url": "https://tracefold-gamma.vercel.app",
+    "vercel_deployment_id": "dpl_929cdbsVPiT8aDGfQwkvJjoMfcAV",
+    "contract": "0x8A9c3Ae6521a1d452253F640a615937c6cf9d00D",
+    "chain_id": 61997,
+    "rpc": "https://studio-dev.genlayer.com/api"
+  },
+  "wallet": {
+    "provider": "OKX Wallet",
+    "account": "0x2DEaCd841181b0ad9676bc55628e694f358944ED"
+  },
+  "proposal": {
+    "nonce": "vercel-r13-a11771f",
+    "identifiers": [
+      "CVE-2024-3094",
+      "GHSA-42XW-2XVC-CX4X"
+    ],
+    "transaction_hash": "0x7ac8627b06381fd029d995f8f63c04a38fa7a127a7137a70f07770413bfa5073",
+    "lifecycle": "FINALIZED",
+    "execution_result": "FINISHED_WITH_RETURN",
+    "consensus_result": "MAJORITY_AGREE",
+    "proposal_id": 7,
+    "proposal_status": "PROPOSED",
+    "proposal_count_before": 6,
+    "proposal_count_after": 7,
+    "transactions_broadcast": 1,
+    "blind_retries": 0
+  },
+  "authoritative_readback": {
+    "nonce_to_proposal": 7,
+    "counts": {
+      "proposals": 7,
+      "clusters": 2,
+      "consumptions": 1
+    },
+    "alias_resolution": {
+      "identifier": "CVE-2024-26130",
+      "cluster_id": 1
+    }
+  },
+  "journeys": {
+    "two_layer_landing_and_docs": "PASS",
+    "keyboard_navigation_and_focus": "PASS",
+    "reduced_motion_css": "PASS",
+    "wallet_provider_selection": "PASS",
+    "network_and_contract_binding": "PASS",
+    "authoritative_reads": "PASS",
+    "fresh_proposal_write": "PASS",
+    "reload_recovery_without_resubmission": "PASS",
+    "failure_before_broadcast": "PASS",
+    "dismissible_transaction_notice": "PASS"
+  },
+  "release_checks": {
+    "frontend_tests": "81/81 PASS",
+    "typecheck": "PASS",
+    "production_build": "PASS",
+    "hero_asset": "image/webp, 111126 bytes, HTTP 200"
+  },
+  "evidence_scope": "The successful transaction was executed on commit a11771f5b47d9d1fd844b4a6ed41e774ed586859. Changes through f757ef5 are limited to presentation, transaction-notice UX, accessibility, tests, and the hero asset; transaction submission, pending-hash storage, and proposal form modules are byte-identical.",
+  "known_limitations": [
+    "Initial Studio Dev registry synchronization was observed to take approximately 15-20 seconds before authoritative counts rendered.",
+    "Studio Dev is a development network and may reset."
+  ]
+}
