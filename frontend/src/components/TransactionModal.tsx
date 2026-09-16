@@ -29,7 +29,9 @@ export const TransactionModal: React.FC = () => {
   const pending = PENDING.has(activeTx.state);
   const alert = activeTx.state === 'FAILED' || activeTx.state === 'REJECTED';
   const dismissible = activeTx.state === 'SUCCESS' || alert;
-  const copy = COPY[activeTx.state];
+  const copy = activeTx.state === 'FAILED' && !activeTx.hash
+    ? { title: 'Transaction not sent', detail: 'Validation or simulation rejected this request before wallet signing.' }
+    : COPY[activeTx.state];
   return (
     <section className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom duration-300" data-transaction-phase={activeTx.state} role={alert ? 'alert' : 'status'} aria-live={alert ? 'assertive' : 'polite'} aria-atomic="true">
       <div className="bg-gray-900 border border-gray-700 rounded-xl p-4 shadow-2xl w-80 sm:w-96 text-xs space-y-3">

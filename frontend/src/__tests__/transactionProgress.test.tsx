@@ -48,4 +48,15 @@ describe('public transaction progress', () => {
     expect(dismissActiveTx).toHaveBeenCalledOnce();
     vi.useRealTimers();
   });
+
+  it('labels a pre-broadcast failure truthfully when no hash exists', () => {
+    useRegistry.mockReturnValue({
+      activeTx: { state: 'FAILED', method: 'consume_incident', description: 'Validation or fee simulation rejected this request before broadcast. No transaction hash was returned.' },
+      dismissActiveTx: vi.fn(),
+    });
+    render(<TransactionModal />);
+    expect(screen.getByText('Transaction not sent')).toBeInTheDocument();
+    expect(screen.getByText(/before broadcast/)).toBeInTheDocument();
+    expect(screen.queryByText('Transaction hash')).not.toBeInTheDocument();
+  });
 });

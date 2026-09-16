@@ -193,7 +193,15 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
       return;
     }
     PendingTxStore.updateStatus(opId, 'FAILED', message);
-    setActiveTx({ state: 'FAILED', hash: operation?.hash, method, error: message });
+    setActiveTx({
+      state: 'FAILED',
+      hash: operation?.hash,
+      method,
+      description: operation?.hash
+        ? undefined
+        : 'Validation or fee simulation rejected this request before broadcast. No transaction hash was returned.',
+      error: message,
+    });
   };
 
   const proposeAliasSet = async (
