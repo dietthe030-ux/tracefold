@@ -23,7 +23,7 @@ Status: planned; execution is gated until the production Vercel release is deplo
 2. **Layer transition:** enter the Layer 2 workspace through the primary call to action and verify that no wallet request occurs before the user chooses a wallet action.
 3. **Wallet and network:** select the intended EIP-6963 provider, connect the intended account, verify or switch to chain `61997`, and confirm the UI displays the deployed Tracefold address.
 4. **Authoritative reads:** read counts, proposal pages and cluster pages; resolve `CVE-2024-26130` to cluster `1`; compare the UI result with a direct authoritative readback.
-5. **Idempotent proposal write:** submit nonce `vercel-r13-<release-short-sha>` with the already assessed pair `CVE-2024-26130` and `PYSEC-2024-225`. Confirm one wallet prompt, one returned hash, FINALIZED status, semantic success, consensus success, and nonce/proposal readback resolving to proposal `1` without creating a duplicate proposal.
+5. **Fresh proposal write:** first confirm the proposal count is `6`, then submit nonce `vercel-r13-<release-short-sha>` with the unused pair `CVE-2024-3094` and `GHSA-42xw-2xvc-cx4x`. Confirm one wallet prompt, one returned hash, FINALIZED status, semantic success, consensus success, nonce readback resolving to new proposal `7`, status `PROPOSED`, the exact two canonical IDs, and proposal count `7`. Do not assess this proposal or submit the nonce a second time during this gate.
 6. **Recovery:** reload after retaining the transaction hash and verify the pending-operation recovery path reconciles the same hash and readback without broadcasting another transaction.
 7. **Failure UX without broadcast:** enter an invalid or duplicate incident-consumption request and verify fee simulation or local validation reports the failure without a transaction broadcast.
 
@@ -32,7 +32,7 @@ Status: planned; execution is gated until the production Vercel release is deplo
 - Production URL, Vercel deployment ID, Git commit and build timestamp.
 - Browser viewport and wallet/provider identity without exposing secrets.
 - Network/contract configuration and direct read parity.
-- For the write: operation ID, transaction hash, terminal status, semantic result, consensus result and authoritative nonce/proposal readback.
+- For the write: operation ID, transaction hash, terminal status, semantic result, consensus result, proposal counts before/after and authoritative nonce/proposal readback for proposal `7`.
 - RPC counts, polling attempts, cache/dedupe behavior and transaction count appended to `docs/RPC-BUDGET.md`.
 - Screenshots of Layer 1, Layer 2, wallet/network state, terminal success and recovery state.
 

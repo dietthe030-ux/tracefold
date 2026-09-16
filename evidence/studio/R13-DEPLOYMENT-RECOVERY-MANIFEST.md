@@ -12,7 +12,7 @@
 - Source: `contracts/tracefold.py`, 50,472 bytes
 - Source SHA-256: `85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1`
 - Source parity: byte-identical through `gen_getContractCode`
-- Constructor arguments: none
+- Constructor argument: `upgrader_address=0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`
 - Lifecycle: `UPGRADABLE`
 - Deployer/upgrader: `actor19`, `0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`
 - Linked contracts: none
