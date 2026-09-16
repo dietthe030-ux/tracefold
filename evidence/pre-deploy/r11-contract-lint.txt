@@ -1,5 +1,0 @@
-
-✓ Lint passed (3 checks)
-✓ Validation passed
-  Contract: Tracefold
-  Methods: 20 (14 view, 6 write)

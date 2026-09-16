@@ -35,7 +35,7 @@ export type SupportedRdns = (typeof SUPPORTED_RDNS)[keyof typeof SUPPORTED_RDNS]
 export const STUDIO_DEVNET_CHAIN_ID = 61997;
 export const STUDIO_DEVNET_CHAIN_ID_HEX = '0xf22d';
 export const STUDIO_DEVNET_RPC_URL = 'https://studio-dev.genlayer.com/api';
-export const STUDIO_DEVNET_EXPLORER_URL = 'https://explorer-studio.genlayer.com';
+export const STUDIO_DEVNET_EXPLORER_URL = 'https://explorer-studio-dev.genlayer.com';
 
 // Registry Domain Models
 export type ProposalStatus = 'PROPOSED' | 'MERGED' | 'KEPT_SEPARATE' | 'UNRESOLVED' | 'CONFLICT';

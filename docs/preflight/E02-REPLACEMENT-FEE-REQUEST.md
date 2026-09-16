@@ -1,9 +1,0 @@
-# Tracefold corrected-source fee request
-
-Status: **DRAFT / NO AUTHORIZATION**. This file is a concrete approval target, not evidence that the user has approved another transaction.
-
-Source SHA-256 `C0ECFC464BC9DBAAAFC8A371B8B7E9218FE4696339F6F7754B6FBCA886542CF0`; package `TRACEFOLD-E02-PREDEPLOY-V2`; fresh replacement deployment operation ID `tf2-deploy-c0ecfc4`. Target `studio-dev`, chain 61997, canonical RPC `https://studio-dev.genlayer.com/api`; actor/upgrader `actor19` / `0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`. Replacement contract address: **PENDING DEPLOYMENT**. The old address is invalidated historical evidence.
-
-Read-only preliminary CLI deployment fee estimate: `distribution` leader 100, validator 200, appeal rounds 0, execution budget 25000000000000000 wei, rotations [3], max GEN per time unit 2, storage/receipt max gas price 300000000; `feeValue` 100000000000010352 wei (0.100000000000010352 GEN deposit). Re-estimate against the final approved source/tool/policy immediately before signature; submit the exact returned values unchanged. Display settled consumed fee and refund after finality. This **new** deployment requires explicit user confirmation of that exact fee/action after independent PRE_DEPLOY approval.
-
-Fresh Studio E2E plan: `evidence/studio/E02-REPLACEMENT-E2E-PLAN.md`. Its user confirmation is separate and must bind the actual new contract address after R00. Proposed ceilings for that later request: at most 15 planned operations, 0.25 GEN deposit per operation and 3.75 GEN aggregate deposits; any documented replacement public-pair operation would require an expressly increased ceiling. Every operation still needs its own documented exact fee estimate, unique stable ID, one broadcast and terminal/result/readback reconciliation. Do not transfer the prior 13-operation authorization from the invalidated source/address.
