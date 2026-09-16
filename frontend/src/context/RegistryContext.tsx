@@ -22,6 +22,7 @@ interface RegistryContextType {
   upgraderAddress: string;
   isLoading: boolean;
   activeTx: TransactionStatus | null;
+  dismissActiveTx: () => void;
   toasts: ToastMessage[];
   refreshAll: () => Promise<void>;
   proposeAliasSet: (nonce: string, id1: string, id2: string, id3?: string) => Promise<ProposalRecord | null>;
@@ -73,6 +74,10 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const dismissToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
+  const dismissActiveTx = useCallback(() => {
+    setActiveTx((current) => current && ['SUCCESS', 'REJECTED', 'FAILED'].includes(current.state) ? null : current);
   }, []);
 
   const refreshAll = useCallback(async () => {
@@ -588,6 +593,7 @@ export const RegistryProvider: React.FC<{ children: ReactNode }> = ({ children }
         upgraderAddress,
         isLoading,
         activeTx,
+        dismissActiveTx,
         toasts,
         refreshAll,
         proposeAliasSet,

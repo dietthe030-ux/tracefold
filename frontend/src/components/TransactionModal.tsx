@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRegistry } from '../context/RegistryContext';
-import { RefreshCw, CheckCircle2, AlertTriangle, Copy } from 'lucide-react';
+import { RefreshCw, CheckCircle2, AlertTriangle, Copy, X } from 'lucide-react';
 import { TransactionState } from '../types';
 
 const PENDING = new Set<TransactionState>(['WAITING_FOR_WALLET', 'SUBMITTED', 'WAITING_FOR_FINALITY', 'VERIFYING_EXECUTION', 'VERIFYING_READBACK']);
@@ -18,11 +18,17 @@ const COPY: Record<TransactionState, { title: string; detail: string }> = {
 };
 
 export const TransactionModal: React.FC = () => {
-  const { activeTx } = useRegistry();
+  const { activeTx, dismissActiveTx } = useRegistry();
   const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    if (activeTx?.state !== 'SUCCESS') return;
+    const timer = window.setTimeout(dismissActiveTx, 8000);
+    return () => window.clearTimeout(timer);
+  }, [activeTx?.state, activeTx?.hash, dismissActiveTx]);
   if (!activeTx || activeTx.state === 'IDLE') return null;
   const pending = PENDING.has(activeTx.state);
   const alert = activeTx.state === 'FAILED' || activeTx.state === 'REJECTED';
+  const dismissible = activeTx.state === 'SUCCESS' || alert;
   const copy = COPY[activeTx.state];
   return (
     <section className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom duration-300" data-transaction-phase={activeTx.state} role={alert ? 'alert' : 'status'} aria-live={alert ? 'assertive' : 'polite'} aria-atomic="true">
@@ -34,7 +40,10 @@ export const TransactionModal: React.FC = () => {
             {(alert || activeTx.state === 'RECONCILIATION_REQUIRED') && <AlertTriangle className="w-4 h-4 mt-0.5 text-amber-400 shrink-0" />}
             <div><strong className="text-white">{copy.title}</strong><p className="text-gray-400 text-[11px] mt-1 leading-relaxed">{activeTx.description || copy.detail}</p></div>
           </div>
-          <span className="text-[9px] text-gray-600 font-mono">{activeTx.method}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] text-gray-600 font-mono">{activeTx.method}</span>
+            {dismissible && <button type="button" aria-label="Close transaction status" title="Close" className="rounded p-1 text-gray-400 hover:bg-gray-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" onClick={dismissActiveTx}><X className="w-4 h-4"/></button>}
+          </div>
         </div>
         {activeTx.hash && <div className="p-2.5 bg-gray-950 rounded border border-gray-800 text-[10px] text-gray-400"><span className="text-gray-600 block uppercase tracking-wider">Transaction hash</span><code className="block break-all my-1.5">{activeTx.hash}</code><button type="button" className="flex items-center gap-1 text-blue-400" onClick={async()=>{await navigator.clipboard.writeText(activeTx.hash!);setCopied(true)}}><Copy className="w-3 h-3"/>{copied?'Copied':'Copy hash'}</button></div>}
         {activeTx.error && <div className="p-2 bg-red-500/10 border border-red-500/20 rounded text-[11px] text-red-300">{activeTx.error}</div>}

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { TransactionModal } from '../components/TransactionModal';
 import { TransactionState } from '../types';
 
@@ -16,7 +16,7 @@ const cases: Array<[TransactionState, string]> = [
 
 describe('public transaction progress', () => {
   it.each(cases)('renders the canonical %s phase', (state, title) => {
-    useRegistry.mockReturnValue({ activeTx: { state, method: 'assess_proposal', hash: state === 'WAITING_FOR_WALLET' ? undefined : `0x${'1'.repeat(64)}` } });
+    useRegistry.mockReturnValue({ activeTx: { state, method: 'assess_proposal', hash: state === 'WAITING_FOR_WALLET' ? undefined : `0x${'1'.repeat(64)}` }, dismissActiveTx: vi.fn() });
     const { container, unmount } = render(<TransactionModal />);
     expect(container.querySelector('[data-transaction-phase]')).toHaveAttribute('data-transaction-phase', state);
     expect(screen.getByText(title)).toBeInTheDocument();
@@ -24,8 +24,28 @@ describe('public transaction progress', () => {
   });
 
   it('hides the indicator in IDLE', () => {
-    useRegistry.mockReturnValue({ activeTx: { state: 'IDLE' } });
+    useRegistry.mockReturnValue({ activeTx: { state: 'IDLE' }, dismissActiveTx: vi.fn() });
     const { container } = render(<TransactionModal />);
     expect(container).toBeEmptyDOMElement();
+  });
+
+  it('lets the user close a completed transaction status', () => {
+    const dismissActiveTx = vi.fn();
+    useRegistry.mockReturnValue({ activeTx: { state: 'SUCCESS', method: 'propose_alias_set', hash: `0x${'2'.repeat(64)}` }, dismissActiveTx });
+    render(<TransactionModal />);
+    fireEvent.click(screen.getByRole('button', { name: 'Close transaction status' }));
+    expect(dismissActiveTx).toHaveBeenCalledOnce();
+  });
+
+  it('automatically closes a completed status after eight seconds', () => {
+    vi.useFakeTimers();
+    const dismissActiveTx = vi.fn();
+    useRegistry.mockReturnValue({ activeTx: { state: 'SUCCESS', method: 'propose_alias_set', hash: `0x${'3'.repeat(64)}` }, dismissActiveTx });
+    render(<TransactionModal />);
+    act(() => vi.advanceTimersByTime(7999));
+    expect(dismissActiveTx).not.toHaveBeenCalled();
+    act(() => vi.advanceTimersByTime(1));
+    expect(dismissActiveTx).toHaveBeenCalledOnce();
+    vi.useRealTimers();
   });
 });
