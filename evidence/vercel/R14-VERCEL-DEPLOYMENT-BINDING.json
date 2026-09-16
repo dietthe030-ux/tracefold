@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "source_commit": "f757ef5e41c49629946a2966a26fae14ddf40459",
+  "deployment_id": "dpl_2ATsgnXhW7fkqvXZBZWbDhNp97DA",
+  "deployment_url": "https://tracefold-13fnjnbgi-dietthe030-uxs-projects.vercel.app",
+  "production_alias": "https://tracefold-gamma.vercel.app",
+  "ready_state": "READY",
+  "target": "production",
+  "public_access": {
+    "deployment_url_http_status": 200,
+    "production_alias_http_status": 200,
+    "deployment_url_html_sha256": "2BAB44E9E0ACEEC5B1F4A799D23B1614202AFD9186CBFDBF9E82B9ADCE1A5862",
+    "production_alias_html_sha256": "2BAB44E9E0ACEEC5B1F4A799D23B1614202AFD9186CBFDBF9E82B9ADCE1A5862",
+    "html_bytes": 1213
+  }
+}

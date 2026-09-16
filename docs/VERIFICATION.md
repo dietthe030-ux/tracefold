@@ -12,7 +12,8 @@
 - Constructor: `upgrader_address=0x9ec6a971ff91c7540cce6432e7abf7ece005d5a5`
 - Frontend release commit: `f757ef5e41c49629946a2966a26fae14ddf40459`
 - Live app: <https://tracefold-gamma.vercel.app>
-- Vercel deployment: `dpl_929cdbsVPiT8aDGfQwkvJjoMfcAV`
+- Vercel deployment: `dpl_2ATsgnXhW7fkqvXZBZWbDhNp97DA`
+- Public immutable deployment URL: <https://tracefold-13fnjnbgi-dietthe030-uxs-projects.vercel.app>
 
 The deployment reached `FINALIZED`, `FINISHED_WITH_RETURN`, and `MAJORITY_AGREE`. `gen_getContractCode` returned 50,472 bytes byte-identical to the committed contract source.
 
@@ -45,6 +46,8 @@ The complete case/result index is [`R13-STUDIO-E2E-LEDGER.md`](../evidence/studi
 ## Production browser-wallet proof
 
 The production journey connected the selected OKX Wallet provider and submitted one proposal transaction: `0x7ac8627b06381fd029d995f8f63c04a38fa7a127a7137a70f07770413bfa5073`. It reached `FINALIZED`, `FINISHED_WITH_RETURN`, and `MAJORITY_AGREE`. Nonce `vercel-r13-a11771f` resolves authoritatively to proposal `7`, with the exact two submitted identifiers; counts are 7 proposals, 2 clusters, and 1 consumption. Reload recovery broadcast no second transaction. The exact result is [`R13-VERCEL-E2E-RESULT.md`](../evidence/vercel/R13-VERCEL-E2E-RESULT.md).
+
+The production alias and public immutable deployment URL returned byte-identical HTML; see [`R14-VERCEL-DEPLOYMENT-BINDING.json`](../evidence/vercel/R14-VERCEL-DEPLOYMENT-BINDING.json).
 
 ## Known limitations
 

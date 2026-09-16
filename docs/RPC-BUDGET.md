@@ -24,7 +24,7 @@ Required before implementing or repairing any GenLayer-connected frontend, inclu
 | Workspace initial lists | shared read client | `get_counts`, `get_paged_proposals(0,20)`, `get_paged_clusters(0,20)`, `get_paged_consumptions(offset,20)`, `get_upgrader` | route entry | chain+contract+method+args / 10s | per normalized key | affected write, network/contract change | none | no automatic retry; hidden tabs pause queued work | 5 | 0 | bounded lists rendered/error |
 | Proposal lookup | shared read client | `get_proposal`, `get_assessment_history`, `get_paged_objections` | explicit ID submit | chain+contract+method+ID / 10s | per normalized key | write touching proposal; chain/contract change | none | no automatic retry; newer lookup may supersede rendered result | 3 | 0 | all requested panels resolve/error |
 | Cluster/alias lookup | shared read client | `get_cluster` or `resolve_alias` | explicit lookup | chain+contract+method+normalized arg / 10s | per normalized key | merge write; chain/contract change | none | no automatic retry | 1 | 0 | parsed cluster/not-found |
-| Wallet connect/sync | selected EIP-6963 provider | `eth_requestAccounts`, `eth_chainId`; switch/add only when needed | explicit wallet choice, provider event | never cached | single connect lock | account/chain/disconnect | none | no automatic retry | 3 (+2 only for add-chain fallback) | 0 | one selected provider/account and chain 61997 |
+| Wallet connect/sync | selected EIP-6963 provider | `eth_requestAccounts`, `eth_chainId`; switch/add only when needed | explicit wallet choice, provider event | never cached | single connect lock | account/chain/disconnect | none | no automatic retry | 5 | 0 | one selected provider/account and chain 61997; bound includes two add-chain fallback calls |
 | Proposal write | selected provider + GenLayer client | fee estimate, `writeContract:propose_alias_set`, finality, proposal/nonce readback, state refresh | explicit confirmed submit | no consequential cache | one operation lock | all read keys after finality | 5s / 24 attempts | SDK observation is bounded; never resubmit hash | 34 | 1 | same hash; FINALIZED; semantic success; consensus; proposal/nonce readback |
 | Assess or retry | selected provider + GenLayer client | proposal/history pre-state, fee estimate, write, finality, proposal/history readback, state refresh | explicit confirmed submit | no consequential cache | one operation lock | all read keys after finality | 5s / 24 attempts | retained-hash reconciliation; no write retry | 36 | 1 | attempts and history advance exactly once; latest record matches history and expected consequence |
 | Objection/conflict | selected provider + GenLayer client | proposal pre-state, fee estimate, write, finality, exact objection readback, state refresh | explicit confirmed submit | no consequential cache | one operation lock | all read keys after finality | 5s / 24 attempts | retained-hash reconciliation; no write retry | 34 | 1 | objection count advances exactly once and exact new record matches caller/code/note |
@@ -35,7 +35,7 @@ For a read-only frontend, record transaction count `0`; do not invent write requ
 
 ## FRONTEND RPC BUDGET EVIDENCE
 
-FRONTEND_EVIDENCE_STATUS: COMPLETE — production browser-wallet run bound to `f757ef5e41c49629946a2966a26fae14ddf40459`
+FRONTEND_EVIDENCE_STATUS: COMPLETE — production browser-wallet run retained by byte-identical frontend tree at `f757ef5e41c49629946a2966a26fae14ddf40459`
 
 Measure the exact deployed critical journeys before the applicable checkpoint and release.
 

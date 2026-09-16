@@ -3,7 +3,8 @@
   "release": {
     "frontend_commit": "f757ef5e41c49629946a2966a26fae14ddf40459",
     "production_url": "https://tracefold-gamma.vercel.app",
-    "vercel_deployment_id": "dpl_929cdbsVPiT8aDGfQwkvJjoMfcAV",
+    "vercel_deployment_id": "dpl_2ATsgnXhW7fkqvXZBZWbDhNp97DA",
+    "vercel_deployment_url": "https://tracefold-13fnjnbgi-dietthe030-uxs-projects.vercel.app",
     "contract": "0x8A9c3Ae6521a1d452253F640a615937c6cf9d00D",
     "chain_id": 61997,
     "rpc": "https://studio-dev.genlayer.com/api"
@@ -59,7 +60,7 @@
     "production_build": "PASS",
     "hero_asset": "image/webp, 111126 bytes, HTTP 200"
   },
-  "evidence_scope": "The successful transaction was executed on commit a11771f5b47d9d1fd844b4a6ed41e774ed586859. Changes through f757ef5 are limited to presentation, transaction-notice UX, accessibility, tests, and the hero asset; transaction submission, pending-hash storage, and proposal form modules are byte-identical.",
+  "evidence_scope": "The successful transaction was executed on commit a11771f5b47d9d1fd844b4a6ed41e774ed586859. The deployed frontend tree at f757ef5 is byte-identical to f757ef5; transaction submission, pending-hash storage, and proposal form modules remain byte-identical to the tested transaction release.",
   "known_limitations": [
     "Initial Studio Dev registry synchronization was observed to take approximately 15-20 seconds before authoritative counts rendered.",
     "Studio Dev is a development network and may reset."

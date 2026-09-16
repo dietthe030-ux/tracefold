@@ -10,7 +10,8 @@ Status: **PASS**. Executed against the exact production binding below. See [`R13
 - Contract source SHA-256: `85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1`
 - Frontend release commit: `f757ef5e41c49629946a2966a26fae14ddf40459`
 - Production URL: <https://tracefold-gamma.vercel.app>
-- Vercel deployment: `dpl_929cdbsVPiT8aDGfQwkvJjoMfcAV`
+- Vercel deployment: `dpl_2ATsgnXhW7fkqvXZBZWbDhNp97DA`
+- Public immutable deployment URL: <https://tracefold-13fnjnbgi-dietthe030-uxs-projects.vercel.app>
 
 ## Controlled execution
 
