@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "taskId": "tracefold-2026-09-15",
+  "workflow": "Milestones",
+  "checkpoint": "POST_DEPLOY_TEST",
+  "reviewerTaskId": "01a0a536-2f73-7ed1-b962-9f40520d4e77",
+  "turnId": "01a0a8ac-8ee3-7882-8f95-87c2bd0d2dbb",
+  "revision": "62000115d75d723f768acf83e5b4b521d968bb5c",
+  "packageCarrier": "d4772908ffa991805ec92af94bb7b5fe732984ed",
+  "packageId": "TRACEFOLD-R13-POST-DEPLOY-V3",
+  "packageSha256": "776EEFC254D0750C39DD3741AD77E20CB431B73C376D67EC4E4E1A5C9DB0A705",
+  "report": {
+    "path": "docs\\preflight\\R13-POST-DEPLOY-APPROVAL-REPORT.md",
+    "sha256": "170956D749E539F6768C99A9330F367D85D1253ACE45FF73254D71B5D8677186"
+  },
+  "artifacts": [
+    {
+      "path": "contracts/tracefold.py",
+      "sha256": "85F6BDC602EBF5F8660D915233729ECE3B1CBE8E40EE4DA7BFA1BCE3325DC3B1"
+    },
+    {
+      "path": "evidence/studio/R13-DEPLOYMENT-RECOVERY-MANIFEST.md",
+      "sha256": "3FE507266864D9737707BCAC586367C12D8D9024291E71A5EC15C90AA3400417"
+    },
+    {
+      "path": "evidence/vercel/R13-VERCEL-E2E-PLAN.md",
+      "sha256": "083C0E1F7ADE64E545A6BC25EC61D043D3EF73AAC19DD83DBE01837BEACF0C83"
+    }
+  ],
+  "openBlockingFindings": 0,
+  "verdict": "APPROVED"
+}
