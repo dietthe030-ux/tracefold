@@ -35,7 +35,7 @@ const Landing = ({ openWorkspace }: { openWorkspace: () => void }) => {
     <header className="story-nav"><Brand/><nav aria-label="Main navigation"><a href="#method">Method</a><span>•</span><a href="#principles">Principles</a><span>•</span><a href="#docs">Docs</a></nav><button className="nav-launch" onClick={openWorkspace}>Open workspace <ArrowRight size={15}/></button></header>
     <main>
       <section className="hero" aria-labelledby="hero-title">
-        <img className="hero-image" src="/tracefold-hero.png" alt="Two hands reaching across public security records"/><div className="hero-vignette"/>
+        <img className="hero-image" src="/tracefold-hero.webp" alt="Two hands reaching across public security records" fetchPriority="high"/><div className="hero-vignette"/>
         <div className="hero-copy"><p className="eyebrow">VERIFIABLE VULNERABILITY IDENTITY</p><h1 id="hero-title">Different records.<br/><em>One defensible truth.</em></h1><p className="hero-lede">Tracefold asks GenLayer validators to reconcile CVE, GHSA and OSV records—then preserves the evidence, objections and decision history onchain.</p><button className="primary-cta" onClick={openWorkspace}>Trace an alias set <ArrowRight size={18}/></button></div>
         <div className="seal-position"><ConsensusSeal/></div><a className="scroll-cue" href="#method"><span>Explore the method</span><ArrowDown size={17}/></a>
         <div className="hero-proof" aria-label="Core guarantees"><span><ShieldCheck size={15}/> Conservative mutation</span><span><History size={15}/> Bounded history</span><span><Fingerprint size={15}/> Evidence fingerprint</span></div>
