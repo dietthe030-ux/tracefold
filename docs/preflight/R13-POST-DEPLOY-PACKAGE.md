@@ -1,6 +1,6 @@
 # Tracefold R13 POST_DEPLOY_TEST review package
 
-Package ID: `TRACEFOLD-R13-POST-DEPLOY-V1`
+Package ID: `TRACEFOLD-R13-POST-DEPLOY-V2`
 
 Evidence revision: `cf3611df42d32e16f21c90e668e52b182effcb2e`
 
@@ -24,6 +24,7 @@ Review checkpoint requested: `POST_DEPLOY_TEST`.
 - On-chain source: 50,472 bytes and byte-identical to local source.
 - Live matrix: T00–T15 completed. Positive writes are FINALIZED + FINISHED_WITH_RETURN + MAJORITY_AGREE with authoritative readbacks. Negative cases have exact rollback plus unchanged state.
 - Final state: 6 proposals, 2 clusters, 1 consumption.
+- Vercel browser-wallet E2E is specified in `evidence/vercel/R13-VERCEL-E2E-PLAN.md`. It is deliberately unexecuted until the exact production release is bound and the user authorizes starting that gate.
 
 The ledger retains two non-product operator/tool failures. T08 first used the nonexistent method `propose_alias`, finalized with semantic error, and left counts unchanged; the approved ABI call then passed. T14 first exposed CLI 0.40.0-rc.3 coercing numeric-looking scalar string `"1"` to integer `1`; it finalized with semantic error and left consumption count zero. A new corrected vector used the existing nonnumeric alias `CVE-2024-26130`, proving alias resolution to cluster 1 and consumption, then the duplicate simulation rejected without broadcast. No source, constructor, address, or material configuration changed.
 
@@ -38,5 +39,6 @@ The ledger retains two non-product operator/tool failures. T08 first used the no
 - `evidence/studio/R13-T14-consume.json`: `FAB979ADBAC9B4C13C8515706136E2F3859463B521BB98781F454937BB2676CD`
 - `evidence/studio/R13-T15-duplicate-consume-simulation.json`: `695E5C142A39F7DAF85147AFDD44E104061492085168DDE9AA74CCB6B19B5689`
 - `evidence/studio/R13-final-source-parity.json`: `B561A467A6247F6ADB42C5B77633F2F9368B369409E063D1C1D457A9E0650743`
+- `evidence/vercel/R13-VERCEL-E2E-PLAN.md`: `15353E59C6F1CAE309A97DBE7481E591695E22661F2278139F18E943FB6ABB25`
 
 Reviewer must inspect exact evidence revision and every bound artifact, verify the retained failures and their unchanged-state proof, and return exactly one final line: `ANONYMOUS REVIEW APPROVED - POST_DEPLOY_TEST` or `ANONYMOUS REVIEW CHANGES REQUIRED - POST_DEPLOY_TEST`.
